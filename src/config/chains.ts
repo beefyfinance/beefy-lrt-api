@@ -1,17 +1,18 @@
-import type { Chain as ViemChain, MulticallBatchOptions } from 'viem';
-import { arbitrum, base, bsc, linea, mainnet, mode, optimism, type Prettify } from 'viem/chains';
 import { keyBy } from 'lodash';
-import { getRequiredStringEnv } from '../utils/env';
 import { keys } from '../utils/object';
-import type { ProviderId } from './providers';
+
+export type ProviderId = 'renzo' | 'etherfi' | 'kelp' | 'vector' | 'anzen';
+export const allProviderIds: ProviderId[] = [
+  'renzo',
+  'etherfi',
+  'kelp',
+  'vector',
+  'anzen',
+] as const;
 
 export type Chain<T extends string = string> = {
   id: T;
   name: string;
-  viem: ViemChain;
-  batch?: boolean | MulticallBatchOptions | undefined;
-  multicall?: boolean | Prettify<MulticallBatchOptions> | undefined;
-  rpc: string;
   providers: Partial<Record<ProviderId, string[]>>;
 };
 
@@ -23,55 +24,42 @@ const renzo = ['ezETH'];
 const etherfi = ['eETH', 'weETH', 'weETH.mode'];
 const kelp = ['rsETH', 'wrsETH'];
 const vector = ['vETH'];
+const anzen = ['USDz'];
 
 export const chains = toChainMap([
   {
     id: 'ethereum',
     name: 'Ethereum',
-    viem: mainnet,
-    rpc: getRequiredStringEnv('ETHEREUM_RPC'),
     providers: { renzo, etherfi, vector },
   },
   {
     id: 'arbitrum',
     name: 'Arbitrum',
-    viem: arbitrum,
-    rpc: getRequiredStringEnv('ARBITRUM_RPC'),
     providers: { renzo, etherfi, kelp },
   },
   {
     id: 'linea',
     name: 'Linea',
-    viem: linea,
-    rpc: getRequiredStringEnv('LINEA_RPC'),
     providers: { renzo, etherfi },
   },
   {
     id: 'base',
     name: 'Base',
-    viem: base,
-    rpc: getRequiredStringEnv('BASE_RPC'),
-    providers: { renzo, etherfi, kelp },
+    providers: { renzo, etherfi, kelp, anzen },
   },
   {
     id: 'optimism',
     name: 'Optimism',
-    viem: optimism,
-    rpc: getRequiredStringEnv('OPTIMISM_RPC'),
     providers: { kelp },
   },
   {
     id: 'bsc',
     name: 'BSC',
-    viem: bsc,
-    rpc: getRequiredStringEnv('BSC_RPC'),
     providers: { etherfi },
   },
   {
     id: 'mode',
     name: 'Mode',
-    viem: mode,
-    rpc: getRequiredStringEnv('MODE_RPC'),
     providers: { etherfi, renzo },
   },
 ] as const satisfies ReadonlyArray<Chain>);

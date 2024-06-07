@@ -1,10 +1,9 @@
 import { FastifyInstance, FastifyPluginOptions, FastifySchema } from 'fastify';
 import S from 'fluent-json-schema';
-import { ChainId, getChainsByProvider } from '../../config/chains';
+import { ChainId, getChainsByProvider, ProviderId } from '../../config/chains';
 import { chainSchema } from '../../schema/chain';
 import { bigintSchema } from '../../schema/bigint';
 import { addressSchema } from '../../schema/address';
-import { ProviderId } from '../../config/providers';
 import { FriendlyError, GraphQueryError } from '../../utils/error';
 import { providerSchema } from '../../schema/provider';
 import { sdk } from './sdk';

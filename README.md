@@ -34,3 +34,7 @@ Wrapper api for the LRT subgraph
 ## Swell
 
 - https://lrt.beefy.finance/api/v2/partner/swell/ethereum/19870729/time-weighted-share-of-wallet/csv
+
+## Anzen
+
+- https://lrt.beefy.finance/api/v2/balances/anzen/base/15505804
