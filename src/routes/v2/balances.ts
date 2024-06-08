@@ -158,6 +158,7 @@ const getBalances = async (chain: ChainId, symbols: string[], blockNumber: bigin
       acc[b.address].detail.push({
         vault: b.vault.vaultId,
         balance: b.effective_balance,
+        token: b.token.address,
       });
       return acc;
     },
@@ -167,7 +168,7 @@ const getBalances = async (chain: ChainId, symbols: string[], blockNumber: bigin
         effective_balance: bigint;
         time_weighted_effective_balance_1s: bigint;
         last_update_block: { number: bigint; timestamp: bigint };
-        detail: { vault: string; balance: bigint }[];
+        detail: { vault: string; token: string; balance: bigint }[];
       }
     >
   );
