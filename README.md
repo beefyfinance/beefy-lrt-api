@@ -41,4 +41,4 @@ Wrapper api for the LRT subgraph
 
 ## Lynex
 
-- https://lrt.beefy.finance/api/v2/balances/lynex/linea/4314151
+- https://lrt.beefy.finance/api/v2/balances/lynex/linea/5413453

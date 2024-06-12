@@ -1,13 +1,14 @@
 import { keyBy } from 'lodash';
 import { keys } from '../utils/object';
 
-export type ProviderId = 'renzo' | 'etherfi' | 'kelp' | 'vector' | 'anzen';
+export type ProviderId = 'renzo' | 'etherfi' | 'kelp' | 'vector' | 'anzen' | 'lynex';
 export const allProviderIds: ProviderId[] = [
   'renzo',
   'etherfi',
   'kelp',
   'vector',
   'anzen',
+  'lynex',
 ] as const;
 
 export type Chain<T extends string = string> = {
