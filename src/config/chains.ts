@@ -26,41 +26,43 @@ const kelp = ['rsETH', 'wrsETH'];
 const vector = ['vETH'];
 const anzen = ['USDz'];
 
+const providers = { renzo, etherfi, kelp, vector, anzen };
+
 export const chains = toChainMap([
   {
     id: 'ethereum',
     name: 'Ethereum',
-    providers: { renzo, etherfi, vector },
+    providers,
   },
   {
     id: 'arbitrum',
     name: 'Arbitrum',
-    providers: { renzo, etherfi, kelp },
+    providers,
   },
   {
     id: 'linea',
     name: 'Linea',
-    providers: { renzo, etherfi },
+    providers,
   },
   {
     id: 'base',
     name: 'Base',
-    providers: { renzo, etherfi, kelp, anzen },
+    providers,
   },
   {
     id: 'optimism',
     name: 'Optimism',
-    providers: { kelp },
+    providers,
   },
   {
     id: 'bsc',
     name: 'BSC',
-    providers: { etherfi },
+    providers,
   },
   {
     id: 'mode',
     name: 'Mode',
-    providers: { etherfi, renzo },
+    providers,
   },
 ] as const satisfies ReadonlyArray<Chain>);
 
