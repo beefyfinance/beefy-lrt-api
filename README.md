@@ -38,3 +38,7 @@ Wrapper api for the LRT subgraph
 ## Anzen
 
 - https://lrt.beefy.finance/api/v2/balances/anzen/base/15505804
+
+## Lynex
+
+- https://lrt.beefy.finance/api/v2/balances/lynex/linea/4314151

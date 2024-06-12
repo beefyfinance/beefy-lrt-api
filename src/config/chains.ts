@@ -25,8 +25,9 @@ const etherfi = ['eETH', 'weETH', 'weETH.mode'];
 const kelp = ['rsETH', 'wrsETH'];
 const vector = ['vETH'];
 const anzen = ['USDz'];
+const lynex = ['inETH', 'ainETH'];
 
-const providers = { renzo, etherfi, kelp, vector, anzen };
+const providers = { renzo, etherfi, kelp, vector, anzen, lynex };
 
 export const chains = toChainMap([
   {
