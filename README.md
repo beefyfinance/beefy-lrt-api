@@ -43,3 +43,7 @@ Wrapper api for the LRT subgraph
 ## Lynex
 
 - https://lrt.beefy.finance/api/v2/balances/lynex/linea/5413453
+
+## Kinetix
+
+- https://lrt.beefy.finance/api/v2/partner/kinetix/kava/10419541/time-weighted-underlying
