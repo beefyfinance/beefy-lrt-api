@@ -1,6 +1,6 @@
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify';
-import swell from './swell';
 import kinetix from './kinetix';
+import swell from './swell';
 
 export default async function (
   instance: FastifyInstance,

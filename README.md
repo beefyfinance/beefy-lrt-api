@@ -10,6 +10,12 @@ Token symbols: USDz
 
 - https://lrt.beefy.finance/api/v2/balances/anzen/base/15505804
 
+## Dolomite
+
+Token symbols: dUSDC
+
+- https://lrt.beefy.finance/api/v2/balances/dolomite/arbitrum/228287548
+
 ## Ethena
 
 Token symbols: USDe

@@ -1,16 +1,6 @@
 import { keyBy } from 'lodash';
 import { keys } from '../utils/object';
 
-export type ProviderId = 'renzo' | 'etherfi' | 'kelp' | 'vector' | 'anzen' | 'lynex';
-export const allProviderIds: ProviderId[] = [
-  'renzo',
-  'etherfi',
-  'kelp',
-  'vector',
-  'anzen',
-  'lynex',
-] as const;
-
 export type Chain<T extends string = string> = {
   id: T;
   name: string;
@@ -24,6 +14,7 @@ function toChainMap<T extends ReadonlyArray<Chain>>(arr: T) {
 }
 
 const anzen = ['USDz'];
+const dolomite = ['dUSDC'];
 const ethena = ['USDe'];
 const etherfi = ['eETH', 'weETH', 'weETH.mode'];
 const kelp = ['rsETH', 'wrsETH'];
@@ -31,7 +22,19 @@ const lynex = ['inETH', 'ainETH'];
 const renzo = ['ezETH'];
 const vector = ['vETH'];
 
-const providers = { renzo, etherfi, kelp, vector, anzen, lynex, ethena };
+const providers = {
+  anzen,
+  dolomite,
+  ethena,
+  etherfi,
+  kelp,
+  lynex,
+  renzo,
+  vector,
+};
+
+export type ProviderId = keyof typeof providers;
+export const allProviderIds: ProviderId[] = keys(providers);
 
 export const chains = toChainMap([
   {

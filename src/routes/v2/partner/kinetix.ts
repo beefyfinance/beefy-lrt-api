@@ -9,7 +9,6 @@ export default async function (
   _opts: FastifyPluginOptions,
   done: (err?: Error) => void
 ) {
-  // swell csv endpoint
   {
     type UrlParams = {
       block: string;
