@@ -18,7 +18,9 @@ export type Chain<T extends string = string> = {
 };
 
 function toChainMap<T extends ReadonlyArray<Chain>>(arr: T) {
-  return keyBy(arr, 'id') as { [K in T[number]['id']]: Extract<T[number], { id: K }> };
+  return keyBy(arr, 'id') as {
+    [K in T[number]['id']]: Extract<T[number], { id: K }>;
+  };
 }
 
 const renzo = ['ezETH'];

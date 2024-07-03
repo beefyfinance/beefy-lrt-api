@@ -1,0 +1,35 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 100,
+    "attributePosition": "auto",
+    "ignore": ["./.husky/**", "./build/**", "./node_modules/**"]
+  },
+  "organizeImports": {
+    "enabled": true,
+    "ignore": ["./.husky/**", "./build/**", "./node_modules/**"]
+  },
+  "linter": {
+    "enabled": true,
+    "ignore": ["./.husky/**", "./build/**", "./node_modules/**"],
+    "rules": { "recommended": true }
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "es5",
+      "semicolons": "always",
+      "arrowParentheses": "asNeeded",
+      "bracketSpacing": true,
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "attributePosition": "auto"
+    }
+  }
+}

@@ -1,11 +1,12 @@
-import { FastifyInstance, FastifyPluginOptions, FastifySchema } from 'fastify';
+import type { FastifyInstance, FastifyPluginOptions, FastifySchema } from 'fastify';
 import S from 'fluent-json-schema';
-import { ChainId, getChainsByProvider, ProviderId } from '../../config/chains';
-import { chainSchema } from '../../schema/chain';
-import { bigintSchema } from '../../schema/bigint';
+import type { ChainId, ProviderId } from '../../config/chains';
+import { getChainsByProvider } from '../../config/chains';
 import { addressSchema } from '../../schema/address';
-import { FriendlyError, GraphQueryError } from '../../utils/error';
+import { bigintSchema } from '../../schema/bigint';
+import { chainSchema } from '../../schema/chain';
 import { providerSchema } from '../../schema/provider';
+import { FriendlyError, GraphQueryError } from '../../utils/error';
 import { sdk } from './sdk';
 
 export default async function (
@@ -94,7 +95,10 @@ export default async function (
           return;
         }
         const result = await getBalances(chainConfig.id, symbols, BigInt(block));
-        reply.send({ ...result, meta: { ...result.meta, provider: providerId } });
+        reply.send({
+          ...result,
+          meta: { ...result.meta, provider: providerId },
+        });
       }
     );
   }

@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyPluginOptions, FastifySchema } from 'fastify';
+import type { FastifyInstance, FastifyPluginOptions, FastifySchema } from 'fastify';
 import S from 'fluent-json-schema';
 import { bigintSchema } from '../../../schema/bigint';
 import { GraphQueryError } from '../../../utils/error';
@@ -47,7 +47,7 @@ export default async function (
   done();
 }
 
-export const getKinetixRows = async (block: BigInt) => {
+export const getKinetixRows = async (block: bigint) => {
   const res = await sdk
     .KinetixTimeWeightedBalance(
       {

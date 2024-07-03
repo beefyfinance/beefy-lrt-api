@@ -12,7 +12,7 @@ export function createCachedFactory<P, R>(
     if (cache[index] === undefined) {
       cache[index] = factoryFn(...args);
     }
-    return cache[index]!;
+    return cache[index];
   };
 }
 

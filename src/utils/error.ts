@@ -1,3 +1,5 @@
+import { get } from 'lodash';
+
 export class FriendlyError extends Error {
   constructor(message: string) {
     super(message);
@@ -6,8 +8,9 @@ export class FriendlyError extends Error {
 }
 
 export class GraphQueryError extends FriendlyError {
-  constructor(e: any) {
-    super(e?.message ?? e?.toString() ?? 'Unknown TheGraph error');
+  constructor(e: unknown) {
+    const message = get(e || {}, 'message', null) ?? e?.toString() ?? 'Unknown TheGraph error';
+    super(message);
     this.name = 'GraphQueryError';
   }
 }

@@ -8,9 +8,8 @@
     "build": "tsc",
     "start": "node build/src/index.js",
     "dev": "ts-node-dev --require=dotenv/config src/index.ts",
-    "prettier:check": "prettier --check src/**/*.ts",
-    "format": "prettier --write src/**/*.ts",
-    "prettier:fix": "prettier --write src/**/*.ts",
+    "format": "biome check src/**/*.{ts,graphql}",
+    "format:fix": "biome check --write --unsafe src/**/*.{ts,graphql}",
     "package:check": "ncu",
     "package:fix": "ncu -u && npm install",
     "postinstall": "npm --silent run codegen",
@@ -38,13 +37,13 @@
     "pino": "^8.19.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@types/node": "^20.11.30",
     "dotenv": "^16.4.5",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "npm-check-updates": "^16.14.18",
     "pino-pretty": "^11.0.0",
-    "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.3"
@@ -53,6 +52,6 @@
     "node": "^20.10.0"
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx,json}": "prettier --write"
+    "src/**/*.{ts,tsx,graphql,json}": "biome format --write"
   }
 }

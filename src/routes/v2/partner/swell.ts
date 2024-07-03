@@ -1,10 +1,10 @@
-import { FastifyInstance, FastifyPluginOptions, FastifySchema } from 'fastify';
+import { stringify as csvStringify } from 'csv-stringify/sync';
+import Decimal from 'decimal.js';
+import type { FastifyInstance, FastifyPluginOptions, FastifySchema } from 'fastify';
 import S from 'fluent-json-schema';
 import { bigintSchema } from '../../../schema/bigint';
 import { GraphQueryError } from '../../../utils/error';
 import { sdk } from '../sdk';
-import { stringify as csvStringify } from 'csv-stringify/sync';
-import Decimal from 'decimal.js';
 
 export default async function (
   instance: FastifyInstance,
@@ -54,7 +54,7 @@ export default async function (
   done();
 }
 
-export const getSwellRows = async (block: BigInt) => {
+export const getSwellRows = async (block: bigint) => {
   const res = await sdk
     .SwellTimeWeightedBalance(
       {

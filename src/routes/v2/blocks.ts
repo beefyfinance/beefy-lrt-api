@@ -1,11 +1,12 @@
-import { FastifyInstance, FastifyPluginOptions, FastifyReply, FastifySchema } from 'fastify';
+import type { FastifyInstance, FastifyPluginOptions, FastifyReply, FastifySchema } from 'fastify';
 import S from 'fluent-json-schema';
-import { ChainId, ProviderId, getChainsByProvider } from '../../config/chains';
-import { chainSchema } from '../../schema/chain';
-import { bigintSchema } from '../../schema/bigint';
+import type { ChainId, ProviderId } from '../../config/chains';
+import { getChainsByProvider } from '../../config/chains';
 import { addressSchema } from '../../schema/address';
-import { GraphQueryError } from '../../utils/error';
+import { bigintSchema } from '../../schema/bigint';
+import { chainSchema } from '../../schema/chain';
 import { providerSchema } from '../../schema/provider';
+import { GraphQueryError } from '../../utils/error';
 import { sdk } from './sdk';
 
 export default async function (
@@ -69,7 +70,7 @@ export default async function (
       reply: FastifyReply,
       chain: ChainId,
       providerId: ProviderId,
-      block: BigInt | undefined
+      block: bigint | undefined
     ) {
       const validChains = getChainsByProvider(providerId);
       const chainConfig = validChains.find(c => c.id === chain);
@@ -117,7 +118,7 @@ export default async function (
 export const getBlocks = async (
   chain: ChainId,
   symbols: string[],
-  beforeBlock: BigInt | undefined
+  beforeBlock: bigint | undefined
 ) => {
   const commonVariables = { token_symbols: symbols };
   const commonOptions = { chainName: chain };
