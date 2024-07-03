@@ -23,14 +23,15 @@ function toChainMap<T extends ReadonlyArray<Chain>>(arr: T) {
   };
 }
 
-const renzo = ['ezETH'];
+const anzen = ['USDz'];
+const ethena = ['USDe'];
 const etherfi = ['eETH', 'weETH', 'weETH.mode'];
 const kelp = ['rsETH', 'wrsETH'];
-const vector = ['vETH'];
-const anzen = ['USDz'];
 const lynex = ['inETH', 'ainETH'];
+const renzo = ['ezETH'];
+const vector = ['vETH'];
 
-const providers = { renzo, etherfi, kelp, vector, anzen, lynex };
+const providers = { renzo, etherfi, kelp, vector, anzen, lynex, ethena };
 
 export const chains = toChainMap([
   {
