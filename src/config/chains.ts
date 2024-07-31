@@ -14,6 +14,7 @@ function toChainMap<T extends ReadonlyArray<Chain>>(arr: T) {
 }
 
 const anzen = ['USDz'];
+const bedrock = ['uniETH'];
 const dolomite = ['dUSDC'];
 const ethena = ['USDe'];
 const etherfi = ['eETH', 'weETH', 'weETH.mode'];
@@ -24,6 +25,7 @@ const vector = ['vETH'];
 
 const providers = {
   anzen,
+  bedrock,
   dolomite,
   ethena,
   etherfi,

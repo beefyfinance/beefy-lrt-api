@@ -10,6 +10,13 @@ Token symbols: USDz
 
 - https://lrt.beefy.finance/api/v2/balances/anzen/base/15505804
 
+
+## Bedrock
+
+Token symbols: uniETH
+
+- https://lrt.beefy.finance/api/v2/balances/bedrock/arbitrum/238035668
+
 ## Dolomite
 
 Token symbols: dUSDC
