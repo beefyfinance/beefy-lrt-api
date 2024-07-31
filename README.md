@@ -63,6 +63,14 @@ Token symbols: inETH, ainETH
 - https://lrt.beefy.finance/api/v2/balances/lynex/linea/5413453
 
 
+## StakeStone
+
+Token symbols: STONE
+
+- https://lrt.beefy.finance/api/v2/balances/stakestone/linea/7523848
+- https://lrt.beefy.finance/api/v2/balances/stakestone/manta/2822716
+
+
 ## Renzo
 
 Token symbols: ezETH

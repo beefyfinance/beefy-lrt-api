@@ -21,6 +21,7 @@ const etherfi = ['eETH', 'weETH', 'weETH.mode'];
 const kelp = ['rsETH', 'wrsETH'];
 const lynex = ['inETH', 'ainETH'];
 const renzo = ['ezETH'];
+const stakestone = ['STONE'];
 const vector = ['vETH'];
 
 const providers = {
@@ -32,6 +33,7 @@ const providers = {
   kelp,
   lynex,
   renzo,
+  stakestone,
   vector,
 };
 
@@ -40,18 +42,8 @@ export const allProviderIds: ProviderId[] = keys(providers);
 
 export const chains = toChainMap([
   {
-    id: 'ethereum',
-    name: 'Ethereum',
-    providers,
-  },
-  {
     id: 'arbitrum',
     name: 'Arbitrum',
-    providers,
-  },
-  {
-    id: 'linea',
-    name: 'Linea',
     providers,
   },
   {
@@ -60,18 +52,38 @@ export const chains = toChainMap([
     providers,
   },
   {
-    id: 'optimism',
-    name: 'Optimism',
-    providers,
-  },
-  {
     id: 'bsc',
     name: 'BSC',
     providers,
   },
   {
+    id: 'ethereum',
+    name: 'Ethereum',
+    providers,
+  },
+  {
+    id: 'kava',
+    name: 'Kava',
+    providers,
+  },
+  {
+    id: 'linea',
+    name: 'Linea',
+    providers,
+  },
+  {
+    id: 'manta',
+    name: 'Manta',
+    providers,
+  },
+  {
     id: 'mode',
     name: 'Mode',
+    providers,
+  },
+  {
+    id: 'optimism',
+    name: 'Optimism',
     providers,
   },
 ] as const satisfies ReadonlyArray<Chain>);
