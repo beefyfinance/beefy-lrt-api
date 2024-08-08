@@ -75,7 +75,7 @@ export const getKinetixRows = async (block: bigint) => {
       address: b.investorPosition.investor.address,
       share_amount: b.investorPosition.rawSharesBalance,
       underlying_amount: b.rawBalance,
-      time_weighted_underlying_amount_1h: b.rawTimeWeightedBalance,
+      time_weighted_underlying_amount_1h: BigInt(b.rawTimeWeightedBalance) / (60n * 60n),
     })),
   };
 };

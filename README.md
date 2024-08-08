@@ -93,3 +93,7 @@ Token symbols: vETH
 
 - https://lrt.beefy.finance/api/v2/balances/vector/ethereum/19810011
 
+## Yei
+
+- https://lrt.beefy.finance/api/v2/partner/yei/sei/94421006/time-weighted-token-breakdown
+

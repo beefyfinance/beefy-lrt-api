@@ -13,7 +13,7 @@ function toChainMap<T extends ReadonlyArray<Chain>>(arr: T) {
   };
 }
 
-const anzen = ['USDz'];
+const anzen = ['USDz' /*, 'sUSDz'*/];
 const bedrock = ['uniETH'];
 const dolomite = ['dUSDC'];
 const ethena = ['USDe'];
@@ -23,6 +23,7 @@ const lynex = ['inETH', 'ainETH'];
 const renzo = ['ezETH'];
 const stakestone = ['STONE'];
 const vector = ['vETH'];
+const yei = ['yei']; // this token does not exist
 
 const providers = {
   anzen,
@@ -35,6 +36,7 @@ const providers = {
   renzo,
   stakestone,
   vector,
+  yei,
 };
 
 export type ProviderId = keyof typeof providers;
@@ -84,6 +86,11 @@ export const chains = toChainMap([
   {
     id: 'optimism',
     name: 'Optimism',
+    providers,
+  },
+  {
+    id: 'sei',
+    name: 'Sei',
     providers,
   },
 ] as const satisfies ReadonlyArray<Chain>);

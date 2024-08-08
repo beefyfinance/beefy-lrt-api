@@ -1,0 +1,8 @@
+query TokenSearchBySymbol($token_symbols: [String!]!) {
+  tokens(where: {symbol_in: $token_symbols}) {
+    address: id
+    symbol
+    name
+    decimals
+  }
+}
