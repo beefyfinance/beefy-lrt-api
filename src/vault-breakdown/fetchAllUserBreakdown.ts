@@ -1,20 +1,28 @@
 import { uniq } from 'lodash';
 import type { Hex } from 'viem';
 import type { ChainId } from '../config/chains';
+import { getLoggerFor } from '../utils/log';
 import { getVaultBreakdowns } from './breakdown/getVaultBreakdown';
 import type { BeefyVaultBreakdown } from './breakdown/types';
 import { type BeefyVault, getBeefyVaultConfig } from './vault/getBeefyVaultConfig';
 import { getTokenBalances } from './vault/getTokenBalances';
+
+const logger = getLoggerFor('vault-breakdown/fetchAllUserBreakdown');
 
 export const getUserTVLAtBlock = async (
   chainId: ChainId,
   blockNumber: bigint,
   vaultFilter: (vault: BeefyVault) => boolean
 ) => {
+  logger.debug(`Fetching user TVL at block ${blockNumber} for chain ${chainId}`);
+
   const [allVaultConfigs, investorPositions] = await Promise.all([
     getBeefyVaultConfig(chainId, vaultFilter),
     getTokenBalances(chainId, BigInt(blockNumber)),
   ]);
+  logger.debug(
+    `Fetched ${allVaultConfigs.length} vaults and ${investorPositions.length} positions`
+  );
 
   const vaultConfigs = allVaultConfigs.filter(vaultFilter);
 
@@ -51,7 +59,11 @@ export const getUserTVLAtBlock = async (
       )
   );
   // get breakdowns for all vaults
+  logger.debug(
+    `Fetching breakdowns for ${vaults.length} vaults at block ${blockNumber} for chain ${chainId}`
+  );
   const breakdowns = await getVaultBreakdowns(chainId, BigInt(blockNumber), vaults);
+  logger.debug(`Fetched ${breakdowns.length} breakdowns`);
 
   const breakdownByVaultAddress = breakdowns.reduce(
     (acc, breakdown) => {
