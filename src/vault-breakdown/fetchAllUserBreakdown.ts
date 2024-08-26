@@ -12,7 +12,7 @@ export const getUserTVLAtBlock = async (
   vaultFilter: (vault: BeefyVault) => boolean
 ) => {
   const [allVaultConfigs, investorPositions] = await Promise.all([
-    getBeefyVaultConfig(chainId),
+    getBeefyVaultConfig(chainId, vaultFilter),
     getTokenBalances(chainId, BigInt(blockNumber)),
   ]);
 

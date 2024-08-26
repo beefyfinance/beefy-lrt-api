@@ -1,5 +1,6 @@
 import type { Hex } from 'viem';
 import type { ChainId } from '../../config/chains';
+import { FriendlyError } from '../../utils/error';
 import { SUBGRAPH_PAGE_SIZE, getBalanceSubgraphUrl } from '../config';
 
 type TokenBalance = {
@@ -60,14 +61,17 @@ export const getTokenBalances = async (
     });
 
     if (!response.ok) {
-      console.error(await response.text());
-      throw new Error(`Subgraph query failed with status ${response.status}`);
+      const text = await response.text();
+      console.error(text);
+      throw new FriendlyError(`Subgraph query failed with status ${response.status}: ${text}`);
     }
 
-    const res = (await response.json()) as { data: QueryResult };
-    if (!res.data) {
-      console.error(res);
-      throw new Error('Subgraph query failed');
+    const res = (await response.json()) as
+      | { data: QueryResult }
+      | { errors: { message: string }[] };
+    if ('errors' in res) {
+      const errors = res.errors.map(e => e.message).join(', ');
+      throw new FriendlyError(`Subgraph query failed: ${errors}`);
     }
 
     allPositions = allPositions.concat(
