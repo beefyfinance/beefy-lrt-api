@@ -33,12 +33,13 @@ Token symbols: USDe
 
 Token symbols: eETH, weETH, weETH.mode
 
-- https://lrt.beefy.finance/api/v2/balances/etherfi/arbitrum/208382994
-- https://lrt.beefy.finance/api/v2/balances/etherfi/base/14108248
-- https://lrt.beefy.finance/api/v2/balances/etherfi/bsc/38513337
-- https://lrt.beefy.finance/api/v2/balances/etherfi/ethereum/19810011
-- https://lrt.beefy.finance/api/v2/balances/etherfi/linea/4314151
-- https://lrt.beefy.finance/api/v2/balances/etherfi/mode/8184560
+- https://lrt.beefy.finance/api/v2/partner/etherfi/arbitrum/points-integration/user-balance?blockNumber=246881993
+- https://lrt.beefy.finance/api/v2/partner/etherfi/base/points-integration/user-balance?blockNumber=18940179
+- https://lrt.beefy.finance/api/v2/partner/etherfi/bsc/points-integration/user-balance?blockNumber=41698876
+- https://lrt.beefy.finance/api/v2/partner/etherfi/ethereum/points-integration/user-balance?blockNumber=20612296
+- https://lrt.beefy.finance/api/v2/partner/etherfi/linea/points-integration/user-balance?blockNumber=8629020
+- https://lrt.beefy.finance/api/v2/partner/etherfi/mode/points-integration/user-balance?blockNumber=12251035
+- https://lrt.beefy.finance/api/v2/partner/etherfi/optimism/points-integration/user-balance?blockNumber=124535424
 
 
 ## Kelp

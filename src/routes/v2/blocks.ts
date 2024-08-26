@@ -7,7 +7,7 @@ import { bigintSchema } from '../../schema/bigint';
 import { chainSchema } from '../../schema/chain';
 import { providerSchema } from '../../schema/provider';
 import { GraphQueryError } from '../../utils/error';
-import { sdk } from './sdk';
+import { graphClient } from './graphClient';
 
 export default async function (
   instance: FastifyInstance,
@@ -123,14 +123,14 @@ export const getBlocks = async (
   const commonVariables = { token_symbols: symbols };
   const commonOptions = { chainName: chain };
   const req = beforeBlock
-    ? sdk.LatestVaultBreakdownsBySymbolBeforeBlock(
+    ? graphClient.LatestVaultBreakdownsBySymbolBeforeBlock(
         {
           ...commonVariables,
           before_block: beforeBlock.toString(),
         },
         commonOptions
       )
-    : sdk.LatestVaultBreakdownsBySymbol(commonVariables, commonOptions);
+    : graphClient.LatestVaultBreakdownsBySymbol(commonVariables, commonOptions);
   const res = await req.catch((e: unknown) => {
     // we have nothing to leak here
     throw new GraphQueryError(e);

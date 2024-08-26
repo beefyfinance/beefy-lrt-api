@@ -2,7 +2,7 @@ import type { FastifyInstance, FastifyPluginOptions, FastifySchema } from 'fasti
 import S from 'fluent-json-schema';
 import { bigintSchema } from '../../../schema/bigint';
 import { GraphQueryError } from '../../../utils/error';
-import { sdk } from '../sdk';
+import { graphClient } from '../graphClient';
 
 export default async function (
   instance: FastifyInstance,
@@ -47,7 +47,7 @@ export default async function (
 }
 
 export const getKinetixRows = async (block: bigint) => {
-  const res = await sdk
+  const res = await graphClient
     .KinetixTimeWeightedBalance(
       {
         block_number: Number(block),

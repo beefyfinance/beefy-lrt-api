@@ -3,7 +3,7 @@ import S from 'fluent-json-schema';
 import type { ChainId } from '../../../config/chains';
 import { bigintSchema } from '../../../schema/bigint';
 import { GraphQueryError } from '../../../utils/error';
-import { sdk } from '../sdk';
+import { graphClient } from '../graphClient';
 
 export default async function (
   instance: FastifyInstance,
@@ -56,7 +56,7 @@ export const getYeiRows = async (block: bigint) => {
     platform: 'AAVE', // this is because that field contains the token breakdown strategy and not the actual platform
     token_addresses: tokenAddresses,
   });
-  const res = await sdk
+  const res = await graphClient
     .TokenBreakdownByPlatform(
       {
         block_number: Number(block),
@@ -96,7 +96,7 @@ export const getYeiRows = async (block: bigint) => {
 };
 
 const getTokenConfig = async (chain: ChainId, tokenSymbols: string[]) => {
-  const res = await sdk
+  const res = await graphClient
     .TokenSearchBySymbol(
       {
         token_symbols: tokenSymbols,

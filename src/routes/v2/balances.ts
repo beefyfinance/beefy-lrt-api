@@ -7,7 +7,7 @@ import { bigintSchema } from '../../schema/bigint';
 import { chainSchema } from '../../schema/chain';
 import { providerSchema } from '../../schema/provider';
 import { FriendlyError, GraphQueryError } from '../../utils/error';
-import { sdk } from './sdk';
+import { graphClient } from './graphClient';
 
 export default async function (
   instance: FastifyInstance,
@@ -107,7 +107,7 @@ export default async function (
 }
 
 const getBalances = async (chain: ChainId, symbols: string[], blockNumber: bigint) => {
-  const res = await sdk
+  const res = await graphClient
     .TokenBreakdownBalancesBySymbol(
       {
         block_number: Number(blockNumber),
