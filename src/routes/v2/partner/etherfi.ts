@@ -94,10 +94,7 @@ export default async function (
           BigInt(blockNumber)
         );
         reply.send({
-          Result: result.map(r => ({
-            address: r.address,
-            effective_balance: r.effective_balance.toString(),
-          })),
+          Result: result,
         });
       }
     );
@@ -154,6 +151,6 @@ const getEtherFiRows = async (
 
   return Object.entries(balanceAggByUser).map(([address, balance]) => ({
     address,
-    effective_balance: balance,
+    effective_balance: balance.toNumber(),
   }));
 };
