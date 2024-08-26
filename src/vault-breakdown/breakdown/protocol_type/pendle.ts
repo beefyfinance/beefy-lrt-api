@@ -2,6 +2,7 @@ import { getContract } from 'viem';
 import type { BeefyViemClient } from '../../../utils/viemClient';
 import { BeefyVaultV7Abi } from '../../abi/BeefyVaultV7Abi';
 import { PendleMarketAbi } from '../../abi/PendleMarket';
+import { PendleSyTokenAbi } from '../../abi/PendleSyToken';
 import type { BeefyVault } from '../../vault/getBeefyVaultConfig';
 import type { BeefyVaultBreakdown } from '../types';
 
@@ -26,12 +27,20 @@ export const getPendleVaultBreakdown = async (
     abi: PendleMarketAbi,
   });
 
-  const [vaultWantBalance, vaultTotalSupply, tokenAddresses, pendleState] = await Promise.all([
-    vaultContract.read.balance({ blockNumber }),
-    vaultContract.read.totalSupply({ blockNumber }),
-    pendleMarketContract.read.readTokens({ blockNumber }),
-    pendleMarketContract.read.readState([PENDLE_ROUTER_ADDRESS], { blockNumber }),
-  ]);
+  const vaultWantBalance = await vaultContract.read.balance({ blockNumber });
+  const vaultTotalSupply = await vaultContract.read.totalSupply({ blockNumber });
+  const tokenAddresses = await pendleMarketContract.read.readTokens({ blockNumber });
+  const pendleState = await pendleMarketContract.read.readState([PENDLE_ROUTER_ADDRESS], {
+    blockNumber,
+  });
+
+  const syTokenContract = getContract({
+    client,
+    address: tokenAddresses[0],
+    abi: PendleSyTokenAbi,
+  });
+
+  const syUnderlyingAddress = await syTokenContract.read.yieldToken({ blockNumber });
 
   return {
     vault,
@@ -40,7 +49,7 @@ export const getPendleVaultBreakdown = async (
     isLiquidityEligible: true,
     balances: [
       {
-        tokenAddress: tokenAddresses[0],
+        tokenAddress: syUnderlyingAddress,
         vaultBalance: (pendleState.totalSy * vaultWantBalance) / pendleState.totalLp,
       },
     ],

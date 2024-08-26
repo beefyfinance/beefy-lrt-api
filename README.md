@@ -29,11 +29,13 @@ Token symbols: USDe
 
 ### Fetch user list
 
+Prod
 - https://lrt.beefy.finance/api/v2/partner/ethena/arbitrum/users
 - https://lrt.beefy.finance/api/v2/partner/ethena/fraxtal/users
 - https://lrt.beefy.finance/api/v2/partner/ethena/mantle/users
 - https://lrt.beefy.finance/api/v2/partner/ethena/optimism/users
 
+Dev
 - http://localhost:4000/api/v2/partner/ethena/arbitrum/users
 - http://localhost:4000/api/v2/partner/ethena/fraxtal/users
 - http://localhost:4000/api/v2/partner/ethena/mantle/users
@@ -41,11 +43,13 @@ Token symbols: USDe
 
 ### Fetch user balance
 
+Prod
 - https://lrt.beefy.finance/api/v2/partner/ethena/arbitrum/user/0x0000000000000000000000000000000000000000/balance/228287548
 - https://lrt.beefy.finance/api/v2/partner/ethena/fraxtal/user/0x0000000000000000000000000000000000000000/balance/8937546
 - https://lrt.beefy.finance/api/v2/partner/ethena/mantle/user/0x0000000000000000000000000000000000000000/balance/68277738
 - https://lrt.beefy.finance/api/v2/partner/ethena/optimism/user/0x0000000000000000000000000000000000000000/balance/124535424
 
+Dev
 - http://localhost:4000/api/v2/partner/ethena/arbitrum/user/0x0000000000000000000000000000000000000000/balance/228287548
 - http://localhost:4000/api/v2/partner/ethena/fraxtal/user/0x0000000000000000000000000000000000000000/balance/8937546
 - http://localhost:4000/api/v2/partner/ethena/mantle/user/0x0000000000000000000000000000000000000000/balance/68277738
@@ -57,6 +61,7 @@ Token symbols: USDe
 
 Token symbols: eETH, weETH, weETH.mode
 
+Prod
 - https://lrt.beefy.finance/api/v2/partner/etherfi/arbitrum/points-integration/user-balance?blockNumber=246881993
 - https://lrt.beefy.finance/api/v2/partner/etherfi/base/points-integration/user-balance?blockNumber=18940179
 - https://lrt.beefy.finance/api/v2/partner/etherfi/bsc/points-integration/user-balance?blockNumber=41698876
@@ -65,6 +70,7 @@ Token symbols: eETH, weETH, weETH.mode
 - https://lrt.beefy.finance/api/v2/partner/etherfi/mode/points-integration/user-balance?blockNumber=12251035
 - https://lrt.beefy.finance/api/v2/partner/etherfi/optimism/points-integration/user-balance?blockNumber=124535424
 
+Dev
 - http://localhost:4000/api/v2/partner/etherfi/arbitrum/points-integration/user-balance?blockNumber=246881993
 - http://localhost:4000/api/v2/partner/etherfi/base/points-integration/user-balance?blockNumber=18940179
 - http://localhost:4000/api/v2/partner/etherfi/bsc/points-integration/user-balance?blockNumber=41698876
