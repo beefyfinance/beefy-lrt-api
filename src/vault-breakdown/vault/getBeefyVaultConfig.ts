@@ -44,13 +44,13 @@ export type BeefyBoost = {
 };
 
 export type BeefyProtocolType =
+  | 'aave'
   | 'balancer_aura'
   | 'beefy_clm_vault'
   | 'beefy_clm'
   | 'curve'
   | 'gamma'
   | 'ichi'
-  | 'mendi'
   | 'pendle_equilibria'
   | 'solidly';
 
@@ -62,6 +62,7 @@ type ApiPlatformId =
   | 'equilibria'
   | 'gamma'
   | 'ichi'
+  | 'lendle'
   | 'lynex'
   | 'magpie'
   | 'mendi'
@@ -150,9 +151,10 @@ const protocol_map: Record<ApiPlatformId, BeefyProtocolType> = {
   equilibria: 'pendle_equilibria',
   gamma: 'gamma',
   ichi: 'ichi',
+  lendle: 'aave',
   lynex: 'solidly',
   magpie: 'pendle_equilibria',
-  mendi: 'mendi',
+  mendi: 'aave',
   nile: 'solidly',
   velodrome: 'solidly',
 };

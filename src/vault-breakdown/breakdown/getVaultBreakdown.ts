@@ -1,11 +1,11 @@
 import type { ChainId } from '../../config/chains';
 import { type BeefyViemClient, getViemClient } from '../../utils/viemClient';
 import type { BeefyProtocolType, BeefyVault } from '../vault/getBeefyVaultConfig';
+import { getAaveVaultBreakdown } from './protocol_type/aave';
 import { getBalancerAuraVaultBreakdown } from './protocol_type/balancer';
 import { getBeefyClmManagerBreakdown, getBeefyClmVaultBreakdown } from './protocol_type/beefy_clm';
 import { getCurveVaultBreakdown } from './protocol_type/curve';
 import { getGammaVaultBreakdown } from './protocol_type/gamma';
-import { getMendiVaultBreakdown } from './protocol_type/mendi';
 import { getPendleVaultBreakdown } from './protocol_type/pendle';
 import { getSolidlyVaultBreakdown } from './protocol_type/solidly';
 import type { BeefyVaultBreakdown } from './types';
@@ -17,13 +17,13 @@ type BreakdownMethod = (
 ) => Promise<BeefyVaultBreakdown>;
 
 const breakdownMethods: Record<BeefyProtocolType, BreakdownMethod> = {
+  aave: getAaveVaultBreakdown,
   balancer_aura: getBalancerAuraVaultBreakdown,
   beefy_clm_vault: getBeefyClmVaultBreakdown,
   beefy_clm: getBeefyClmManagerBreakdown,
   curve: getCurveVaultBreakdown,
   gamma: getGammaVaultBreakdown,
   ichi: getGammaVaultBreakdown,
-  mendi: getMendiVaultBreakdown,
   pendle_equilibria: getPendleVaultBreakdown,
   solidly: getSolidlyVaultBreakdown,
 };

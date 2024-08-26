@@ -4,7 +4,10 @@ import { BeefyVaultV7Abi } from '../../abi/BeefyVaultV7Abi';
 import type { BeefyVault } from '../../vault/getBeefyVaultConfig';
 import type { BeefyVaultBreakdown } from '../types';
 
-export const getMendiVaultBreakdown = async (
+/**
+ * @dev assumes no lend/borrow looping
+ */
+export const getAaveVaultBreakdown = async (
   client: BeefyViemClient,
   blockNumber: bigint,
   vault: BeefyVault
