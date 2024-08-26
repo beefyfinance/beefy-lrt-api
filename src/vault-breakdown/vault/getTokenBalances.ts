@@ -11,17 +11,7 @@ type TokenBalance = {
 };
 
 type QueryResult = {
-  [key in
-    | 'tokenBalances0'
-    | 'tokenBalances1'
-    | 'tokenBalances2'
-    | 'tokenBalances3'
-    | 'tokenBalances4'
-    | 'tokenBalances5'
-    | 'tokenBalances6'
-    | 'tokenBalances7'
-    | 'tokenBalances8'
-    | 'tokenBalances9']: {
+  [key in `tokenBalances${number}`]: {
     account: {
       id: Hex;
     };
@@ -36,63 +26,87 @@ const logger = getLoggerFor('vault-breakdown/vault/getTokenBalances');
 
 const PARRALEL_REQUESTS = 10;
 const PARRALEL_REQUESTS_ARRAY = Array.from({ length: PARRALEL_REQUESTS }, (_, i) => i);
-const USER_BALANCES_QUERY = `
-  fragment Balance on TokenBalance {
-    account {
-      id
-    }
-    token {
-      id
-    }
-    amount
-  }
-
-  query UserBalances($blockNumber: Int!, $first: Int!, ${PARRALEL_REQUESTS_ARRAY.map(i => `$skip${i}: Int!`).join(', ')}) {
-    ${PARRALEL_REQUESTS_ARRAY.slice(1).map(
-      i => `
-      tokenBalances${i}: tokenBalances(
-        block: { number: $blockNumber }
-        first: $first
-        where: { amount_gt: 0 }
-        skip: $skip${i}
-        orderBy: id
-        orderDirection: asc
-      ) {
-        ...Balance
-      }
-    `
-    )}
-  }
-`;
 
 export const getTokenBalances = async (
   chainId: ChainId,
-  blockNumber: bigint
+  filters: {
+    blockNumber?: bigint;
+    minBalance?: bigint;
+  }
 ): Promise<TokenBalance[]> => {
   let allPositions: TokenBalance[] = [];
   let skip = 0;
   const startAt = Date.now();
-  logger.debug(`Fetching user balances for chain ${chainId} at block ${blockNumber}`);
+  logger.debug({
+    msg: 'Fetching user balances',
+    chainId,
+    filters,
+  });
   while (true) {
-    logger.trace(
-      `Fetching user balances for chain ${chainId} at block ${blockNumber} with base skip ${skip}`
-    );
+    logger.trace({
+      msg: 'Fetching user balances',
+      chainId,
+      filters,
+      skip,
+    });
+
+    const USER_BALANCES_QUERY = `
+      fragment Balance on TokenBalance {
+        account {
+          id
+        }
+        token {
+          id
+        }
+        amount
+      }
+
+      query UserBalances(
+        $first: Int!, 
+        ${PARRALEL_REQUESTS_ARRAY.map(i => `$skip${i}: Int!`).join(', ')}
+      ) {
+        ${PARRALEL_REQUESTS_ARRAY.map(
+          i => `
+          tokenBalances${i}: tokenBalances(
+            ${filters.blockNumber ? `block: { number: ${filters.blockNumber} }` : ''}
+            first: $first
+            ${filters.minBalance ? `where: { amount_gte: ${filters.minBalance} }` : ''}
+            skip: $skip${i}
+            orderBy: id
+            orderDirection: asc
+          ) {
+            ...Balance
+          }
+        `
+        )}
+      }
+    `;
+
+    const variables = {
+      first: SUBGRAPH_PAGE_SIZE,
+      ...PARRALEL_REQUESTS_ARRAY.reduce(
+        (acc, i) => {
+          acc[`skip${i}`] = skip + i * SUBGRAPH_PAGE_SIZE;
+          return acc;
+        },
+        {} as { [key: string]: number }
+      ),
+    };
+
+    logger.trace({
+      msg: 'Querying subgraph',
+      query: USER_BALANCES_QUERY,
+      chainId,
+      filters,
+      skip,
+      variables,
+    });
 
     const response = await fetch(getBalanceSubgraphUrl(chainId), {
       method: 'POST',
       body: JSON.stringify({
         query: USER_BALANCES_QUERY,
-        variables: {
-          first: SUBGRAPH_PAGE_SIZE,
-          blockNumber: Number(blockNumber),
-          ...PARRALEL_REQUESTS_ARRAY.reduce(
-            (acc, i) => {
-              acc[`skip${i}`] = skip + i * SUBGRAPH_PAGE_SIZE;
-              return acc;
-            },
-            {} as { [key: string]: number }
-          ),
-        },
+        variables,
       }),
       headers: { 'Content-Type': 'application/json' },
     });
@@ -111,25 +125,19 @@ export const getTokenBalances = async (
       throw new FriendlyError(`Subgraph query failed: ${errors}`);
     }
 
-    allPositions = allPositions.concat(
-      (res.data.tokenBalances0 || [])
-        .concat(res.data.tokenBalances1 || [])
-        .concat(res.data.tokenBalances2 || [])
-        .concat(res.data.tokenBalances3 || [])
-        .concat(res.data.tokenBalances4 || [])
-        .concat(res.data.tokenBalances5 || [])
-        .concat(res.data.tokenBalances6 || [])
-        .concat(res.data.tokenBalances7 || [])
-        .concat(res.data.tokenBalances8 || [])
-        .concat(res.data.tokenBalances9 || [])
-        .map(
-          (position): TokenBalance => ({
-            balance: BigInt(position.amount),
-            user_address: position.account.id.toLocaleLowerCase() as Hex,
-            token_address: position.token.id.toLocaleLowerCase() as Hex,
-          })
-        )
+    const foundPositions = PARRALEL_REQUESTS_ARRAY.flatMap(
+      i => res.data[`tokenBalances${i}`] || []
+    ).map(
+      (position): TokenBalance => ({
+        balance: BigInt(position.amount),
+        user_address: position.account.id.toLocaleLowerCase() as Hex,
+        token_address: position.token.id.toLocaleLowerCase() as Hex,
+      })
     );
+
+    allPositions = allPositions.concat(foundPositions);
+
+    logger.debug({ msg: 'Found user balances', chainId, positions: foundPositions.length });
 
     if (res.data.tokenBalances9.length < SUBGRAPH_PAGE_SIZE) {
       break;
@@ -138,11 +146,13 @@ export const getTokenBalances = async (
     skip += SUBGRAPH_PAGE_SIZE * PARRALEL_REQUESTS;
   }
 
-  logger.debug(
-    `Fetched ${allPositions.length} user balances for chain ${chainId} at block ${blockNumber} in ${
-      Date.now() - startAt
-    }ms`
-  );
+  logger.debug({
+    msg: 'Fetched user balances',
+    positions: allPositions.length,
+    chainId,
+    filters,
+    duration: Date.now() - startAt,
+  });
 
   return allPositions;
 };

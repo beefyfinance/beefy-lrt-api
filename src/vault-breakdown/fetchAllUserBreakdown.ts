@@ -14,15 +14,20 @@ export const getUserTVLAtBlock = async (
   blockNumber: bigint,
   vaultFilter: (vault: BeefyVault) => boolean
 ) => {
-  logger.debug(`Fetching user TVL at block ${blockNumber} for chain ${chainId}`);
+  logger.debug({ msg: 'Fetching user TVL', blockNumber, chainId });
 
   const [allVaultConfigs, investorPositions] = await Promise.all([
     getBeefyVaultConfig(chainId, vaultFilter),
-    getTokenBalances(chainId, BigInt(blockNumber)),
+    getTokenBalances(chainId, {
+      blockNumber: BigInt(blockNumber),
+      minBalance: BigInt(1),
+    }),
   ]);
-  logger.debug(
-    `Fetched ${allVaultConfigs.length} vaults and ${investorPositions.length} positions`
-  );
+  logger.debug({
+    msg: 'Fetched vaults and positions',
+    vaultConfigs: allVaultConfigs.length,
+    positions: investorPositions.length,
+  });
 
   const vaultConfigs = allVaultConfigs.filter(vaultFilter);
 
@@ -59,11 +64,14 @@ export const getUserTVLAtBlock = async (
       )
   );
   // get breakdowns for all vaults
-  logger.debug(
-    `Fetching breakdowns for ${vaults.length} vaults at block ${blockNumber} for chain ${chainId}`
-  );
+  logger.debug({
+    msg: 'Fetching breakdowns',
+    vaults: vaults.length,
+    blockNumber,
+    chainId,
+  });
   const breakdowns = await getVaultBreakdowns(chainId, BigInt(blockNumber), vaults);
-  logger.debug(`Fetched ${breakdowns.length} breakdowns`);
+  logger.debug({ msg: 'Fetched breakdowns', breakdowns: breakdowns.length });
 
   const breakdownByVaultAddress = breakdowns.reduce(
     (acc, breakdown) => {

@@ -10,6 +10,7 @@ import { bigintSchema } from '../../../schema/bigint';
 import { chainSchema } from '../../../schema/chain';
 import { getTokenConfigBySymbol } from '../../../utils/addressbook';
 import { getUserTVLAtBlock } from '../../../vault-breakdown/fetchAllUserBreakdown';
+import { getAsyncCache } from '../../../utils/async-lock';
 
 export default async function (
   instance: FastifyInstance,
@@ -109,9 +110,13 @@ const getEtherFiRows = async (
   tokenAddressesFilter: Token[],
   blockNumber: bigint
 ) => {
-  const balances = await getUserTVLAtBlock(chain, blockNumber, vault => {
-    return vault.pointStructureIds.includes('etherfi');
-  });
+  const asyncCache = getAsyncCache();
+
+  const balances = await asyncCache.wrap(`etherfi:breakdown:${chain}:${blockNumber}`, 30_000, () =>
+    getUserTVLAtBlock(chain, blockNumber, vault => {
+      return vault.pointStructureIds.includes('etherfi');
+    })
+  );
 
   const balanceAggByUser = balances
     .filter(b =>

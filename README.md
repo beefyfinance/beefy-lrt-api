@@ -27,7 +27,32 @@ Token symbols: dUSDC
 
 Token symbols: USDe
 
-- https://lrt.beefy.finance/api/v2/balances/ethena/arbitrum/228287548
+### Fetch user list
+
+- https://lrt.beefy.finance/api/v2/partner/ethena/arbitrum/users
+- https://lrt.beefy.finance/api/v2/partner/ethena/fraxtal/users
+- https://lrt.beefy.finance/api/v2/partner/ethena/mantle/users
+- https://lrt.beefy.finance/api/v2/partner/ethena/optimism/users
+
+
+- http://localhost:4000/api/v2/partner/ethena/arbitrum/users
+- http://localhost:4000/api/v2/partner/ethena/fraxtal/users
+- http://localhost:4000/api/v2/partner/ethena/mantle/users
+- http://localhost:4000/api/v2/partner/ethena/optimism/users
+
+### Fetch user balance
+
+- https://lrt.beefy.finance/api/v2/partner/ethena/arbitrum/user/0x0000000000000000000000000000000000000000/balance/228287548
+- https://lrt.beefy.finance/api/v2/partner/ethena/fraxtal/user/0x0000000000000000000000000000000000000000/balance/8937546
+- https://lrt.beefy.finance/api/v2/partner/ethena/mantle/user/0x0000000000000000000000000000000000000000/balance/68277738
+- https://lrt.beefy.finance/api/v2/partner/ethena/optimism/user/0x0000000000000000000000000000000000000000/balance/124535424
+
+- http://localhost:4000/api/v2/partner/ethena/arbitrum/user/0x0000000000000000000000000000000000000000/balance/228287548
+- http://localhost:4000/api/v2/partner/ethena/fraxtal/user/0x0000000000000000000000000000000000000000/balance/8937546
+- http://localhost:4000/api/v2/partner/ethena/mantle/user/0x0000000000000000000000000000000000000000/balance/68277738
+- http://localhost:4000/api/v2/partner/ethena/optimism/user/0x0000000000000000000000000000000000000000/balance/124535424
+
+
 
 ## Etherfi
 
@@ -40,6 +65,14 @@ Token symbols: eETH, weETH, weETH.mode
 - https://lrt.beefy.finance/api/v2/partner/etherfi/linea/points-integration/user-balance?blockNumber=8629020
 - https://lrt.beefy.finance/api/v2/partner/etherfi/mode/points-integration/user-balance?blockNumber=12251035
 - https://lrt.beefy.finance/api/v2/partner/etherfi/optimism/points-integration/user-balance?blockNumber=124535424
+
+- http://localhost:4000/api/v2/partner/etherfi/arbitrum/points-integration/user-balance?blockNumber=246881993
+- http://localhost:4000/api/v2/partner/etherfi/base/points-integration/user-balance?blockNumber=18940179
+- http://localhost:4000/api/v2/partner/etherfi/bsc/points-integration/user-balance?blockNumber=41698876
+- http://localhost:4000/api/v2/partner/etherfi/ethereum/points-integration/user-balance?blockNumber=20612296
+- http://localhost:4000/api/v2/partner/etherfi/linea/points-integration/user-balance?blockNumber=8629020
+- http://localhost:4000/api/v2/partner/etherfi/mode/points-integration/user-balance?blockNumber=12251035
+- http://localhost:4000/api/v2/partner/etherfi/optimism/points-integration/user-balance?blockNumber=124535424
 
 
 ## Kelp

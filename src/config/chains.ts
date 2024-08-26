@@ -64,6 +64,11 @@ export const chains = toChainMap([
     providers,
   },
   {
+    id: 'fraxtal',
+    name: 'Fraxtal',
+    providers,
+  },
+  {
     id: 'kava',
     name: 'Kava',
     providers,
@@ -76,6 +81,11 @@ export const chains = toChainMap([
   {
     id: 'manta',
     name: 'Manta',
+    providers,
+  },
+  {
+    id: 'mantle',
+    name: 'Mantle',
     providers,
   },
   {

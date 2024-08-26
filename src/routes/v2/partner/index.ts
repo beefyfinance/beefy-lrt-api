@@ -1,4 +1,5 @@
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify';
+import ethena from './ethena';
 import etherfi from './etherfi';
 import kinetix from './kinetix';
 import swell from './swell';
@@ -9,6 +10,7 @@ export default async function (
   _opts: FastifyPluginOptions,
   done: (err?: Error) => void
 ) {
+  instance.register(ethena, { prefix: '/ethena' });
   instance.register(etherfi, { prefix: '/etherfi' });
   instance.register(kinetix, { prefix: '/kinetix' });
   instance.register(swell, { prefix: '/swell' });
