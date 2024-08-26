@@ -34,7 +34,6 @@ Token symbols: USDe
 - https://lrt.beefy.finance/api/v2/partner/ethena/mantle/users
 - https://lrt.beefy.finance/api/v2/partner/ethena/optimism/users
 
-
 - http://localhost:4000/api/v2/partner/ethena/arbitrum/users
 - http://localhost:4000/api/v2/partner/ethena/fraxtal/users
 - http://localhost:4000/api/v2/partner/ethena/mantle/users

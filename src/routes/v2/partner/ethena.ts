@@ -12,6 +12,7 @@ import { getTokenConfigBySymbol } from '../../../utils/addressbook';
 import { getAsyncCache } from '../../../utils/async-lock';
 import { getLoggerFor } from '../../../utils/log';
 import { getUserTVLAtBlock } from '../../../vault-breakdown/fetchAllUserBreakdown';
+import { getBeefyVaultConfig } from '../../../vault-breakdown/vault/getBeefyVaultConfig';
 import { getTokenBalances } from '../../../vault-breakdown/vault/getTokenBalances';
 
 const logger = getLoggerFor('routes/v2/partner/ethena');
@@ -80,9 +81,22 @@ export default async function (
 
       logger.debug({ msg: 'Fetching ethena users', chain });
 
-      const allTokenBalances = await asyncCache.wrap(`ethena:users:${chain}`, 30_000, () =>
-        getTokenBalances(chain, {})
-      );
+      const allTokenBalances = await asyncCache.wrap(`ethena:users:${chain}`, 30_000, async () => {
+        const vaultConfig = await getBeefyVaultConfig(chain, vault => {
+          return vault.pointStructureIds.includes('ethena');
+        });
+
+        const allProductAddresses = vaultConfig
+          .map(v => v.vault_address)
+          .concat(vaultConfig.flatMap(v => v.reward_pools.map(p => p.reward_pool_address)))
+          .concat(vaultConfig.flatMap(v => v.boosts.map(b => b.boost_address)));
+
+        logger.trace({ msg: 'Fetching token balances', chain, addresses: allProductAddresses });
+
+        return getTokenBalances(chain, {
+          tokenAddresses: allProductAddresses,
+        });
+      });
       const users = new Set(allTokenBalances.map(r => r.user_address));
 
       reply.send(Array.from(users));
