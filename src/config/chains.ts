@@ -15,6 +15,7 @@ function toChainMap<T extends ReadonlyArray<Chain>>(arr: T) {
 
 const anzen = ['USDz' /*, 'sUSDz'*/];
 const bedrock = ['uniETH'];
+const dlcbtc = ['DLCBTC'];
 const dolomite = ['dUSDC'];
 const ethena = ['USDe'];
 const etherfi = ['eETH', 'weETH', 'weETH.mode'];
@@ -28,6 +29,7 @@ const yei = ['yei']; // this token does not exist
 const providers = {
   anzen,
   bedrock,
+  dlcbtc,
   dolomite,
   ethena,
   etherfi,

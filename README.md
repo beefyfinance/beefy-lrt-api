@@ -17,6 +17,16 @@ Token symbols: uniETH
 
 - https://lrt.beefy.finance/api/v2/balances/bedrock/arbitrum/238035668
 
+## dlcBTC
+
+Token symbols: dlcBTC
+
+Prod:
+- https://lrt.beefy.finance/api/v2/balances/dlcbtc/arbitrum/250396152
+
+Dev:
+- http://localhost:4000/api/v2/balances/dlcbtc/arbitrum/250396152
+
 ## Dolomite
 
 Token symbols: dUSDC
