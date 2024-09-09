@@ -210,7 +210,7 @@ const getEthenaBalance = async (
         throw new Error('Token not found');
       }
 
-      const decimalizedBalance = new Decimal(b.token_balance.toString(10)).div(
+      const decimalizedBalance = new Decimal(b.token_balance.balance.toString(10)).div(
         new Decimal(10).pow(token.decimals)
       );
       return acc.add(decimalizedBalance);

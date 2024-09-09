@@ -84,7 +84,17 @@ export const getUserTVLAtBlock = async (
   // merge by investor address and token address
   const investorTokenBalances: Record<
     Hex /* investor */,
-    Record<Hex /* token */, bigint /* amount */>
+    Record<
+      Hex /* token */,
+      {
+        balance: bigint /* amount */;
+        details: {
+          vault_id: string;
+          vault_address: string;
+          contribution: bigint;
+        }[];
+      }
+    >
   > = {};
   for (const position of mergedPositions) {
     const breakdown = breakdownByVaultAddress[position.token_address];
@@ -104,11 +114,21 @@ export const getUserTVLAtBlock = async (
 
     for (const breakdownBalance of breakdown.balances) {
       if (!investorTokenBalances[position.user_address][breakdownBalance.tokenAddress]) {
-        investorTokenBalances[position.user_address][breakdownBalance.tokenAddress] = BigInt(0);
+        investorTokenBalances[position.user_address][breakdownBalance.tokenAddress] = {
+          balance: BigInt(0),
+          details: [],
+        };
       }
 
-      investorTokenBalances[position.user_address][breakdownBalance.tokenAddress] +=
+      const breakdownContribution =
         (position.balance * breakdownBalance.vaultBalance) / breakdown.vaultTotalSupply;
+      investorTokenBalances[position.user_address][breakdownBalance.tokenAddress].balance +=
+        breakdownContribution;
+      investorTokenBalances[position.user_address][breakdownBalance.tokenAddress].details.push({
+        vault_id: breakdown.vault.id,
+        vault_address: breakdown.vault.vault_address,
+        contribution: breakdownContribution,
+      });
     }
   }
 

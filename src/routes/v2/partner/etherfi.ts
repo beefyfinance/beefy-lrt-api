@@ -9,8 +9,8 @@ import { addressSchema } from '../../../schema/address';
 import { bigintSchema } from '../../../schema/bigint';
 import { chainSchema } from '../../../schema/chain';
 import { getTokenConfigBySymbol } from '../../../utils/addressbook';
-import { getUserTVLAtBlock } from '../../../vault-breakdown/fetchAllUserBreakdown';
 import { getAsyncCache } from '../../../utils/async-lock';
+import { getUserTVLAtBlock } from '../../../vault-breakdown/fetchAllUserBreakdown';
 
 export default async function (
   instance: FastifyInstance,
@@ -143,7 +143,7 @@ const getEtherFiRows = async (
           throw new Error('Token not found');
         }
 
-        const decimalizedBalance = new Decimal(b.token_balance.toString(10)).div(
+        const decimalizedBalance = new Decimal(b.token_balance.balance.toString(10)).div(
           new Decimal(10).pow(token.decimals)
         );
 
