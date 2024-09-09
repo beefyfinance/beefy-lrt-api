@@ -102,9 +102,9 @@ Token symbols: rsETH, wrsETH
 Scope: Only vaults marked as `kelp` as `pointStructureIds`
 
 Prod
-- https://lrt.beefy.finance/api/v2/breakdown/base//provider-token-balance/kelp/19538130
-- https://lrt.beefy.finance/api/v2/breakdown/ethereum//provider-token-balance/kelp/20711449
-- https://lrt.beefy.finance/api/v2/breakdown/linea//provider-token-balance/kelp/9225077
+- https://lrt.beefy.finance/api/v2/breakdown/base/provider-token-balance/kelp/19538130
+- https://lrt.beefy.finance/api/v2/breakdown/ethereum/provider-token-balance/kelp/20711449
+- https://lrt.beefy.finance/api/v2/breakdown/linea/provider-token-balance/kelp/9225077
 
 Dev
 - http://localhost:4000/api/v2/breakdown/base/provider-token-balance/kelp/19538130
