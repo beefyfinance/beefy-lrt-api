@@ -13,6 +13,7 @@ import {
 
 export type BeefyVault = {
   id: string;
+  is_active: boolean;
   vault_address: Hex;
   undelying_lp_address: Hex;
   strategy_address: Hex;
@@ -235,6 +236,7 @@ const getAllConfigs = async (chain: ChainId): Promise<BeefyVault[]> => {
 
     return {
       id: vault.id,
+      is_active: vault.status === 'active',
       vault_address,
       chain: vault.chain,
       vault_token_symbol: vault.earnedToken,
@@ -292,6 +294,7 @@ const getAllConfigs = async (chain: ChainId): Promise<BeefyVault[]> => {
     const boosts = boostPerUnderlyingAddress[vault_address] ?? [];
     return {
       id: vault.id,
+      is_active: vault.status === 'active',
       vault_address,
       chain: vault.chain,
       vault_token_symbol: vault.earnedToken,

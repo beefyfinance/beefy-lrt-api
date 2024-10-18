@@ -159,3 +159,11 @@ Token symbols: vETH
 
 - https://lrt.beefy.finance/api/v2/partner/yei/sei/94421006/time-weighted-token-breakdown
 
+
+# Other Endpoints
+
+## Config
+
+- https://lrt.beefy.finance/api/v2/config/arbitrum/points-earning/kelp
+- https://lrt.beefy.finance/api/v2/config/arbitrum/points-earning/etherfi
+
