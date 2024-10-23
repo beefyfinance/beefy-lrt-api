@@ -61,6 +61,7 @@ type ApiPlatformId =
   | 'aura'
   | 'beefy'
   | 'curve'
+  | 'convex'
   | 'equilibria'
   | 'gamma'
   | 'ichi'
@@ -150,6 +151,7 @@ const protocol_map: Record<ApiPlatformId, BeefyProtocolType> = {
   aura: 'balancer_aura',
   beefy: 'beefy_clm',
   curve: 'curve',
+  convex: 'curve',
   equilibria: 'pendle_equilibria',
   gamma: 'gamma',
   ichi: 'ichi',
