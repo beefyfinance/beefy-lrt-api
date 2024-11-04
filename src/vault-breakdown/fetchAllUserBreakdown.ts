@@ -4,6 +4,7 @@ import type { ChainId } from '../config/chains';
 import { getLoggerFor } from '../utils/log';
 import { getVaultBreakdowns } from './breakdown/getVaultBreakdown';
 import type { BeefyVaultBreakdown } from './breakdown/types';
+import { extractAllAddresses } from './vault/getAllAddresses';
 import { type BeefyVault, getBeefyVaultConfig } from './vault/getBeefyVaultConfig';
 import { getTokenBalances } from './vault/getTokenBalances';
 
@@ -16,13 +17,12 @@ export const getUserTVLAtBlock = async (
 ) => {
   logger.debug({ msg: 'Fetching user TVL', blockNumber, chainId });
 
-  const [allVaultConfigs, investorPositions] = await Promise.all([
-    getBeefyVaultConfig(chainId, vaultFilter),
-    getTokenBalances(chainId, {
-      blockNumber: BigInt(blockNumber),
-      minBalance: BigInt(1),
-    }),
-  ]);
+  const allVaultConfigs = await getBeefyVaultConfig(chainId, vaultFilter);
+  const investorPositions = await getTokenBalances(chainId, {
+    blockNumber: BigInt(blockNumber),
+    amountGt: 0n,
+    tokenAddresses: extractAllAddresses(allVaultConfigs),
+  });
   logger.debug({
     msg: 'Fetched vaults and positions',
     vaultConfigs: allVaultConfigs.length,

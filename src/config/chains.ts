@@ -25,6 +25,7 @@ const renzo = ['ezETH'];
 const stakestone = ['STONE'];
 const vector = ['vETH'];
 const yei = ['yei']; // this token does not exist
+const solv = ['SolvBTC.BBN'];
 
 const providers = {
   anzen,
@@ -36,6 +37,7 @@ const providers = {
   kelp,
   lynex,
   renzo,
+  solv,
   stakestone,
   vector,
   yei,

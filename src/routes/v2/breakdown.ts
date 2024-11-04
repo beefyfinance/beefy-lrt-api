@@ -1,7 +1,6 @@
 import type { Token } from 'blockchain-addressbook';
 import type { FastifyInstance, FastifyPluginOptions, FastifySchema } from 'fastify';
 import S from 'fluent-json-schema';
-import { uniq } from 'lodash';
 import type { Hex } from 'viem';
 import type { ChainId, ProviderId } from '../../config/chains';
 import { getChainsByProvider } from '../../config/chains';
@@ -12,6 +11,7 @@ import { providerSchema } from '../../schema/provider';
 import { getTokenConfigBySymbol } from '../../utils/addressbook';
 import { getAsyncCache } from '../../utils/async-lock';
 import { getUserTVLAtBlock } from '../../vault-breakdown/fetchAllUserBreakdown';
+import { extractAllAddresses } from '../../vault-breakdown/vault/getAllAddresses';
 import {
   type BeefyVault,
   getBeefyVaultConfig,
@@ -92,7 +92,7 @@ export default async function (
           return;
         }
 
-        const result = await getKelpRows(
+        const result = await getBalanceAggRows(
           chainConfig.id,
           providerId,
           holderAddresses || [],
@@ -109,7 +109,7 @@ export default async function (
   done();
 }
 
-const getKelpRows = async (
+const getBalanceAggRows = async (
   chain: ChainId,
   providerId: ProviderId,
   holderContractAddressesFilter: Hex[],
@@ -123,19 +123,7 @@ const getKelpRows = async (
   };
 
   const vaults = await getBeefyVaultConfig(chain, vaultFilter);
-  const allContractAddresses = uniq(
-    vaults
-      .map(v => v.vault_address)
-      .concat(vaults.flatMap(v => v.strategy_address))
-      .concat(vaults.flatMap(v => v.undelying_lp_address))
-      .concat(vaults.flatMap(v => v.vault_address))
-      .concat(vaults.flatMap(v => v.reward_pools.map(p => p.clm_address)))
-      .concat(vaults.flatMap(v => v.reward_pools.map(p => p.reward_pool_address)))
-      .concat(vaults.flatMap(v => v.boosts.map(b => b.boost_address)))
-      .flat()
-      .filter(Boolean)
-      .map(a => a.toLocaleLowerCase())
-  );
+  const allContractAddresses = extractAllAddresses(vaults);
 
   const balances = await asyncCache.wrap(
     `${providerId}:breakdown:${chain}:${blockNumber}`,

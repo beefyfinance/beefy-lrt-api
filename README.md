@@ -143,6 +143,17 @@ Token symbols: ezETH
 - https://lrt.beefy.finance/api/v2/balances/renzo/linea/4314151
 - https://lrt.beefy.finance/api/v2/balances/renzo/mode/8184560
 
+## Solv
+
+Vault Whitelist
+
+Prod:
+- https://lrt.beefy.finance/api/v2/breakdown/bsc/provider-token-balance/solv/43714115
+
+Dev:
+- http://localhost:4000/api/v2/breakdown/bsc/provider-token-balance/solv/43714115
+
+
 
 ## Swell
 

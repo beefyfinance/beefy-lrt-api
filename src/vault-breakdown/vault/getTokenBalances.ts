@@ -32,7 +32,7 @@ export const getTokenBalances = async (
   filters: {
     blockNumber?: bigint;
     tokenAddresses?: Hex[];
-    minBalance?: bigint;
+    amountGt?: bigint;
   }
 ): Promise<TokenBalance[]> => {
   let allPositions: TokenBalance[] = [];
@@ -72,9 +72,9 @@ export const getTokenBalances = async (
             ${filters.blockNumber ? `block: { number: ${filters.blockNumber} }` : ''}
             first: $first
             ${
-              filters.minBalance || filters.tokenAddresses?.length
+              filters.amountGt || filters.tokenAddresses?.length
                 ? `where: { 
-              ${filters.minBalance ? `amount_gt: "${filters.minBalance}"` : ''}
+              ${filters.amountGt ? `amount_gt: "${filters.amountGt}"` : ''}
               ${
                 filters.tokenAddresses?.length
                   ? `token_in: [${filters.tokenAddresses.map(a => `"${a}"`).join(', ')}]`
