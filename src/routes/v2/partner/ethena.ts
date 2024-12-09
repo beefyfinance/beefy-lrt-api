@@ -202,22 +202,32 @@ const getEthenaBalance = async (
       tokenFilter.some(t => t.address.toLocaleLowerCase() === b.token_address.toLocaleLowerCase())
     )
     .filter(b => userAddressFilter.toLocaleLowerCase() === b.user_address.toLocaleLowerCase())
-    .reduce((acc, b) => {
-      const token = tokenFilter.find(
-        t => t.address.toLocaleLowerCase() === b.token_address.toLocaleLowerCase()
-      );
-      if (!token) {
-        throw new Error('Token not found');
-      }
+    .reduce(
+      (acc, b) => {
+        const token = tokenFilter.find(
+          t => t.address.toLocaleLowerCase() === b.token_address.toLocaleLowerCase()
+        );
+        if (!token) {
+          throw new Error('Token not found');
+        }
 
-      const decimalizedBalance = new Decimal(b.token_balance.balance.toString(10)).div(
-        new Decimal(10).pow(token.decimals)
-      );
-      return acc.add(decimalizedBalance);
-    }, new Decimal(0));
+        const decimalizedBalance = new Decimal(b.token_balance.balance.toString(10)).div(
+          new Decimal(10).pow(token.decimals)
+        );
+        return {
+          amount: acc.amount.add(decimalizedBalance),
+          details: acc.details.concat(b.details),
+        };
+      },
+      {
+        amount: new Decimal(0),
+        details: [] as { vault_id: string; vault_address: string; contribution: bigint }[],
+      }
+    );
 
   return {
     address: userAddressFilter,
-    effective_balance: balanceForUserAndBlock.toString(),
+    effective_balance: balanceForUserAndBlock.amount.toString(),
+    details: balanceForUserAndBlock.details,
   };
 };
