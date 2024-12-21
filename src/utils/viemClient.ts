@@ -16,19 +16,34 @@ import {
 import type { ChainId } from '../config/chains';
 import { createCachedFactoryByChainId } from './factory';
 
+function applyEnv(chainId: ChainId, viemChain: ViemChain): ViemChain {
+  const url = process.env[`${chainId.toUpperCase()}_RPC`];
+  if (!url) {
+    return viemChain;
+  }
+
+  return {
+    ...viemChain,
+    rpcUrls: {
+      default: { http: [url] },
+      public: { http: [url] },
+    },
+  };
+}
+
 const mapping: Record<ChainId, ViemChain> = {
-  linea: linea,
-  arbitrum: arbitrum,
-  base: base,
-  bsc: bsc,
-  ethereum: mainnet,
-  fraxtal: fraxtal,
-  kava: kava,
-  manta: manta,
-  mantle: mantle,
-  mode: mode,
-  optimism: optimism,
-  sei: sei,
+  linea: applyEnv('linea', linea),
+  arbitrum: applyEnv('arbitrum', arbitrum),
+  base: applyEnv('base', base),
+  bsc: applyEnv('bsc', bsc),
+  ethereum: applyEnv('ethereum', mainnet),
+  fraxtal: applyEnv('fraxtal', fraxtal),
+  kava: applyEnv('kava', kava),
+  manta: applyEnv('manta', manta),
+  mantle: applyEnv('mantle', mantle),
+  mode: applyEnv('mode', mode),
+  optimism: applyEnv('optimism', optimism),
+  sei: applyEnv('sei', sei),
 };
 
 export const getViemClient = createCachedFactoryByChainId(chainId => {
