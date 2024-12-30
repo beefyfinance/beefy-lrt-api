@@ -143,6 +143,18 @@ Token symbols: ezETH
 - https://lrt.beefy.finance/api/v2/balances/renzo/linea/4314151
 - https://lrt.beefy.finance/api/v2/balances/renzo/mode/8184560
 
+
+## Rings
+
+Token symbols: scUSD
+
+Prod
+- https://lrt.beefy.finance/api/v2/partner/rings/sonic/2037640/0xCAf41F4Db603c3c0427EA700061B94849b848174/weights
+
+Dev
+- http://localhost:4000/api/v2/partner/rings/sonic/2037640/0xCAf41F4Db603c3c0427EA700061B94849b848174/weights
+
+
 ## Solv
 
 Vault Whitelist

@@ -12,6 +12,7 @@ import {
   mode,
   optimism,
   sei,
+  sonic,
 } from 'viem/chains';
 import type { ChainId } from '../config/chains';
 import { createCachedFactoryByChainId } from './factory';
@@ -44,6 +45,7 @@ const mapping: Record<ChainId, ViemChain> = {
   mode: applyEnv('mode', mode),
   optimism: applyEnv('optimism', optimism),
   sei: applyEnv('sei', sei),
+  sonic: applyEnv('sonic', sonic),
 };
 
 export const getViemClient = createCachedFactoryByChainId(chainId => {

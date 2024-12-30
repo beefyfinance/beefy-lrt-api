@@ -22,10 +22,11 @@ const etherfi = ['eETH', 'weETH', 'weETH.mode'];
 const kelp = ['rsETH', 'wrsETH'];
 const lynex = ['inETH', 'ainETH'];
 const renzo = ['ezETH'];
+const rings = ['scUSD'];
+const solv = ['SolvBTC.BBN'];
 const stakestone = ['STONE'];
 const vector = ['vETH'];
 const yei = ['yei']; // this token does not exist
-const solv = ['SolvBTC.BBN'];
 
 const providers = {
   anzen,
@@ -37,6 +38,7 @@ const providers = {
   kelp,
   lynex,
   renzo,
+  rings,
   solv,
   stakestone,
   vector,
@@ -105,6 +107,11 @@ export const chains = toChainMap([
   {
     id: 'sei',
     name: 'Sei',
+    providers,
+  },
+  {
+    id: 'sonic',
+    name: 'Sonic',
     providers,
   },
 ] as const satisfies ReadonlyArray<Chain>);

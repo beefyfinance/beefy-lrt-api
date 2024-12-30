@@ -28,7 +28,7 @@
     "@graphql-typed-document-node/core": "^3.2.0",
     "@types/lodash-es": "^4.17.12",
     "async-lock": "^1.4.1",
-    "blockchain-addressbook": "^0.47.67",
+    "blockchain-addressbook": "^0.47.115",
     "csv-stringify": "^6.5.0",
     "date-fns": "^3.6.0",
     "decimal.js": "^10.4.3",
@@ -38,7 +38,7 @@
     "lodash": "^4.17.21",
     "node-cache": "^5.1.2",
     "pino": "^8.19.0",
-    "viem": "^2.21.40"
+    "viem": "^2.21.60"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",

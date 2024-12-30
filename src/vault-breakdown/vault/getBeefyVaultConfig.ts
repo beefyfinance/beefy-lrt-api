@@ -60,6 +60,7 @@ type ApiPlatformId =
   | 'aerodrome'
   | 'aura'
   | 'beefy'
+  | 'beethovenx'
   | 'curve'
   | 'convex'
   | 'equilibria'
@@ -161,6 +162,7 @@ const protocol_map: Record<ApiPlatformId, BeefyProtocolType> = {
   mendi: 'aave',
   nile: 'solidly',
   velodrome: 'solidly',
+  beethovenx: 'balancer_aura',
 };
 
 export const getBeefyVaultConfig = async (
