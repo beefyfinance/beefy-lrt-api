@@ -85,6 +85,7 @@ export const getRingsRows = async (block: bigint, vaultAddress: Hex) => {
 
   const amountPerHolder = balances
     .filter(b => !allAddresses.includes(b.user_address.toLowerCase() as Hex))
+    .filter(b => b.balance > 0n)
     .reduce(
       (acc, b) => {
         if (!acc[b.user_address]) {
