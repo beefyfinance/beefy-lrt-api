@@ -96,25 +96,16 @@ export const getRingsRows = async (block: bigint, vaultAddress: Hex) => {
       {} as Record<Hex, bigint>
     );
 
-  const hundredPercent = BigInt(1) * BigInt(10 ** 36);
+  const hundredPercent = BigInt(10) ** BigInt(36);
   const totalAmount = Object.values(amountPerHolder).reduce((acc, b) => acc + b, 0n);
 
+  console.log(amountPerHolder, totalAmount, hundredPercent);
   const percentagePerHolder = Object.fromEntries(
     Object.entries(amountPerHolder).map(([address, amount]) => [
       address,
       (amount * hundredPercent) / totalAmount,
     ])
   );
-  /**
-   * {
-    "weights": [
-        {
-            "user": "0x12345561324567654336765456765",
-            "weight": "500000000000000000000000000000000000" // 50% since 100% is 1e36
-        }
-    ]
-}
-   */
 
   return {
     weights: Object.entries(percentagePerHolder).map(([address, weight]) => ({
