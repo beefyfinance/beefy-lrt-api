@@ -79,8 +79,11 @@ export const getRingsRows = async (block: bigint, vaultAddress: Hex) => {
       : []),
   ].map(a => a.toLowerCase() as Hex);
 
-  const balances = await asyncCache.wrap(`${chain}:breakdown:${block}`, 30_000, () =>
-    getTokenBalances(chain, { blockNumber: block, amountGt: 0n, tokenAddresses: allAddresses })
+  const balances = await asyncCache.wrap(
+    `${chain}:breakdown:${block}:${vaultAddress}`,
+    30_000,
+    () =>
+      getTokenBalances(chain, { blockNumber: block, amountGt: 0n, tokenAddresses: allAddresses })
   );
 
   const amountPerHolder = balances
