@@ -150,10 +150,13 @@ Token symbols: scUSD
 
 Prod
 - https://lrt.beefy.finance/api/v2/partner/rings/sonic/2037640/0xCAf41F4Db603c3c0427EA700061B94849b848174/weights
+- https://lrt.beefy.finance/api/v2/partner/rings/sonic/2037640/0x8f001b85E8E457976d4fAE884548c9772Aa4056C/weights
+- https://lrt.beefy.finance/api/v2/partner/rings/sonic/2037640/0xc84ABde550ae615257067D898a6Cdd235E1857D0/weights
 
 Dev
 - http://localhost:4000/api/v2/partner/rings/sonic/2037640/0xCAf41F4Db603c3c0427EA700061B94849b848174/weights
-
+- http://localhost:4000/api/v2/partner/rings/sonic/2037640/0x8f001b85E8E457976d4fAE884548c9772Aa4056C/weights
+- http://localhost:4000/api/v2/partner/rings/sonic/2037640/0xc84ABde550ae615257067D898a6Cdd235E1857D0/weights
 
 ## Solv
 

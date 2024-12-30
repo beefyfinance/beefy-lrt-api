@@ -64,6 +64,7 @@ type ApiPlatformId =
   | 'curve'
   | 'convex'
   | 'equilibria'
+  | 'equalizer'
   | 'gamma'
   | 'ichi'
   | 'lendle'
@@ -154,6 +155,7 @@ const protocol_map: Record<ApiPlatformId, BeefyProtocolType> = {
   curve: 'curve',
   convex: 'curve',
   equilibria: 'pendle_equilibria',
+  equalizer: 'solidly',
   gamma: 'gamma',
   ichi: 'ichi',
   lendle: 'aave',
