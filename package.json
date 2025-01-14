@@ -12,6 +12,7 @@
     "format:fix": "biome check --write --unsafe src/**/*.{ts,graphql}",
     "package:check": "ncu",
     "package:fix": "ncu -u && npm install",
+    "update:addressbook": "ncu --upgrade blockchain-addressbook viem && npm i",
     "postinstall": "npm --silent run codegen",
     "codegen": "npx graphclient build",
     "lint-staged": "lint-staged"
@@ -28,7 +29,7 @@
     "@graphql-typed-document-node/core": "^3.2.0",
     "@types/lodash-es": "^4.17.12",
     "async-lock": "^1.4.1",
-    "blockchain-addressbook": "^0.47.115",
+    "blockchain-addressbook": "^0.47.117",
     "csv-stringify": "^6.5.0",
     "date-fns": "^3.6.0",
     "decimal.js": "^10.4.3",
@@ -38,7 +39,7 @@
     "lodash": "^4.17.21",
     "node-cache": "^5.1.2",
     "pino": "^8.19.0",
-    "viem": "^2.21.60"
+    "viem": "^2.22.8"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",

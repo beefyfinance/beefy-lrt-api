@@ -143,6 +143,17 @@ Token symbols: ezETH
 - https://lrt.beefy.finance/api/v2/balances/renzo/linea/4314151
 - https://lrt.beefy.finance/api/v2/balances/renzo/mode/8184560
 
+## Resolv
+
+Token symbols: wstUSR
+
+Dev:
+- http://localhost:4000/api/v2/breakdown/ethereum/provider-token-balance/resolv/21624089
+
+Prod:
+- https://lrt.beefy.finance/api/v2/breakdown/ethereum/provider-token-balance/resolv/21624089
+
+
 
 ## Rings
 

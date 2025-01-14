@@ -22,6 +22,7 @@ const etherfi = ['eETH', 'weETH', 'weETH.mode'];
 const kelp = ['rsETH', 'wrsETH'];
 const lynex = ['inETH', 'ainETH'];
 const renzo = ['ezETH'];
+const resolv = ['wstUSR'];
 const rings = ['scUSD'];
 const solv = ['SolvBTC.BBN'];
 const stakestone = ['STONE'];
@@ -38,6 +39,7 @@ const providers = {
   kelp,
   lynex,
   renzo,
+  resolv,
   rings,
   solv,
   stakestone,
