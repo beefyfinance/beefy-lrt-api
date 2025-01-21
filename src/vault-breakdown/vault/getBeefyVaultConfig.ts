@@ -72,6 +72,7 @@ type ApiPlatformId =
   | 'magpie'
   | 'mendi'
   | 'nile'
+  | 'swapx'
   | 'velodrome';
 
 export type ApiStrategyTypeId = 'lp' | 'multi-lp' | 'multi-lp-locked' | 'cowcentrated';
@@ -164,6 +165,7 @@ const protocol_map: Record<ApiPlatformId, BeefyProtocolType> = {
   mendi: 'aave',
   nile: 'solidly',
   velodrome: 'solidly',
+  swapx: 'ichi',
   beethovenx: 'balancer_aura',
 };
 
