@@ -1,0 +1,33 @@
+query TokenBreakdown(
+  $block_number: Int!, 
+  $token_addresses: [String!]!, 
+  $first: Int = 1000, 
+  $skip: Int = 0
+) {
+  beefyVaults(
+    where: {lifecycle_not: INITIALIZING}
+    block: {number: $block_number}
+  ) {
+    address: id
+    underlyingToken {
+      symbol: symbol
+      address: id
+    }
+    positions(first: $first, skip: $skip) {
+      investor {
+        address: id
+      }
+      rawSharesBalance
+      balanceBreakdown(where: {token_in: $token_addresses}) {
+        rawBalance
+        lastUpdateTimestamp
+        lastUpdateBlock
+        rawTimeWeightedBalance
+        token {
+          symbol: symbol
+          address: id
+        }
+      }
+    }
+  }
+}

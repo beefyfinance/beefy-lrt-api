@@ -28,6 +28,7 @@ const solv = ['SolvBTC.BBN'];
 const stakestone = ['STONE'];
 const vector = ['vETH'];
 const yei = ['yei']; // this token does not exist
+const lisk = ['lisk']; // this token does not exist
 
 const providers = {
   anzen,
@@ -37,6 +38,7 @@ const providers = {
   ethena,
   etherfi,
   kelp,
+  lisk,
   lynex,
   renzo,
   resolv,
@@ -84,6 +86,11 @@ export const chains = toChainMap([
   {
     id: 'linea',
     name: 'Linea',
+    providers,
+  },
+  {
+    id: 'lisk',
+    name: 'Lisk',
     providers,
   },
   {
