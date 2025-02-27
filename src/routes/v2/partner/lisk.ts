@@ -3,7 +3,6 @@ import S from 'fluent-json-schema';
 import { bigintSchema } from '../../../schema/bigint';
 import { GraphQueryError } from '../../../utils/error';
 import { graphClient } from '../graphClient';
-import { ChainId } from '../../../config/chains';
 import { getBeefyVaultConfig } from '../../../vault-breakdown/vault/getBeefyVaultConfig';
 import { uniq } from 'lodash';
 
