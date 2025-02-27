@@ -4,6 +4,7 @@ import etherfi from './etherfi';
 import kinetix from './kinetix';
 import rings from './rings';
 import swell from './swell';
+import lisk from './lisk';
 import yei from './yei';
 
 export default async function (
@@ -17,5 +18,6 @@ export default async function (
   instance.register(rings, { prefix: '/rings' });
   instance.register(swell, { prefix: '/swell' });
   instance.register(yei, { prefix: '/yei' });
+  instance.register(lisk, { prefix: '/lisk' });
   done();
 }
