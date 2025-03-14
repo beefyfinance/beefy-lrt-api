@@ -91,7 +91,7 @@ export const getSiloRows = async (chain: ChainId, block: bigint) => {
       investor_address: f.position.investor.address,
       latest_share_balance: f.position.rawSharesBalance,
       latest_underlying_balance: f.breakdown.rawBalance,
-      // time_weighted_underlying_amount_1h: BigInt(f.breakdown.rawTimeWeightedBalance) / (60n * 60n),
+      time_weighted_underlying_amount_1h: BigInt(f.breakdown.rawTimeWeightedBalance) / (60n * 60n),
       // last_update_block: {
       //   number: f.breakdown.lastUpdateBlock,
       //   timestamp: f.breakdown.lastUpdateTimestamp,
