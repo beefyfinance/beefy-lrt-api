@@ -48,6 +48,7 @@ export type BeefyBoost = {
 export type BeefyProtocolType =
   | 'aave'
   | 'balancer_aura'
+  | 'balancer'
   | 'beefy_clm_vault'
   | 'beefy_clm'
   | 'curve'
@@ -71,6 +72,7 @@ type ApiPlatformId =
   | 'lynex'
   | 'magpie'
   | 'mendi'
+  | 'silo'
   | 'nile'
   | 'swapx'
   | 'velodrome';
@@ -167,6 +169,7 @@ const protocol_map: Record<ApiPlatformId, BeefyProtocolType> = {
   velodrome: 'solidly',
   swapx: 'ichi',
   beethovenx: 'balancer_aura',
+  silo: 'balancer',
 };
 
 export const getBeefyVaultConfig = async (

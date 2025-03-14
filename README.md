@@ -178,6 +178,18 @@ Dev
 - http://localhost:4000/api/v2/partner/rings/sonic/2037640/0x8f001b85E8E457976d4fAE884548c9772Aa4056C/weights
 - http://localhost:4000/api/v2/partner/rings/sonic/2037640/0xc84ABde550ae615257067D898a6Cdd235E1857D0/weights
 
+## Silo
+
+silo platform breakdown
+
+Prod:
+- https://lrt.beefy.finance/api/v2/partner/silo/sonic/13753734/time-weighted-token-breakdown
+- https://lrt.beefy.finance/api/v2/partner/silo/arbitrum/13753734/time-weighted-token-breakdown
+
+Dev
+- http://localhost:4000/api/v2/partner/silo/sonic/13753734/time-weighted-token-breakdown
+- http://localhost:4000/api/v2/partner/silo/arbitrum/315749227/time-weighted-token-breakdown
+
 ## Solv
 
 Vault Whitelist

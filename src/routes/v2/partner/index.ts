@@ -6,6 +6,7 @@ import rings from './rings';
 import swell from './swell';
 import lisk from './lisk';
 import yei from './yei';
+import silo from './silo';
 
 export default async function (
   instance: FastifyInstance,
@@ -19,5 +20,6 @@ export default async function (
   instance.register(swell, { prefix: '/swell' });
   instance.register(yei, { prefix: '/yei' });
   instance.register(lisk, { prefix: '/lisk' });
+  instance.register(silo, { prefix: '/silo' });
   done();
 }
