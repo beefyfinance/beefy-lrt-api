@@ -1,0 +1,35 @@
+query VaultBalanceBreakdown(
+  $block_number: Int!, 
+  $vault_addresses_bytes: [Bytes!]!, 
+  $vault_addresses_string: [String!]!, 
+  $first: Int = 1000, 
+  $skip: Int = 0
+) {
+  beefyVaults(
+    where: {lifecycle_not: INITIALIZING, id_in: $vault_addresses_bytes}
+    block: {number: $block_number}
+  ) {
+    address: id
+    rawSharesTokenTotalSupply
+    underlyingToken {
+      symbol: symbol
+      address: id
+    }
+    positions(first: $first, skip: $skip, where: {rawSharesBalance_gt: 0}) {
+      investor {
+        address: id
+      }
+      rawSharesBalance
+      balanceBreakdown (where: {token_not_in: $vault_addresses_string}) {
+        rawBalance
+        lastUpdateTimestamp
+        lastUpdateBlock
+        rawTimeWeightedBalance
+        token {
+          symbol: symbol
+          address: id
+        }
+      }
+    }
+  }
+}

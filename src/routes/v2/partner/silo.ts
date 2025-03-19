@@ -1,12 +1,15 @@
+import Decimal from 'decimal.js';
 import type { FastifyInstance, FastifyPluginOptions, FastifySchema } from 'fastify';
 import S from 'fluent-json-schema';
-import { GraphQueryError } from '../../../utils/error';
-import { graphClient } from '../graphClient';
-import { getBeefyVaultConfig } from '../../../vault-breakdown/vault/getBeefyVaultConfig';
 import { uniq } from 'lodash';
-import { chainSchema } from '../../../schema/chain';
-import { ChainId } from '../../../config/chains';
+import { erc20Abi } from 'viem';
+import type { ChainId } from '../../../config/chains';
 import { bigintSchema } from '../../../schema/bigint';
+import { chainSchema } from '../../../schema/chain';
+import { GraphQueryError } from '../../../utils/error';
+import { getViemClient } from '../../../utils/viemClient';
+import { getBeefyVaultConfig } from '../../../vault-breakdown/vault/getBeefyVaultConfig';
+import { graphClient } from '../graphClient';
 
 export default async function (
   instance: FastifyInstance,
@@ -51,20 +54,82 @@ export default async function (
 }
 
 export const getSiloRows = async (chain: ChainId, block: bigint) => {
+  const beetsv3SonicBeefyusdceScusd = '0x0ad8162b686af063073eabbea9bc6fda2d8184a4';
+  const beefyWrapper = '0x7870ddFd5ACA4E977B2287e9A212bcbe8FC4135a';
+  const silov2SonicUsdceWs = '0xdb6E5dC4C6748EcECb97b565F6C074f24384fD07';
+
   const vaultConfig = await getBeefyVaultConfig(chain, v => {
-    return v.pointStructureIds.includes('silo-points') && v.id !== 'beetsv3-sonic-beefyusdce-scusd';
+    return (
+      v.pointStructureIds.includes('silo-points') &&
+      v.vault_address.toLowerCase() !== beetsv3SonicBeefyusdceScusd.toLowerCase()
+    );
   });
 
-  const allProductAddresses = vaultConfig
-    .map(v => v.vault_address)
-    .concat(vaultConfig.flatMap(v => v.reward_pools.map(p => p.reward_pool_address)))
-    .concat(vaultConfig.flatMap(v => v.boosts.map(b => b.boost_address)));
+  const positions = (
+    await graphClient
+      .VaultBalanceBreakdown(
+        {
+          block_number: Number(block),
+          vault_addresses_bytes: vaultConfig.map(v => v.vault_address),
+          vault_addresses_string: vaultConfig.map(v => v.vault_address),
+        },
+        { chainName: chain }
+      )
+      .catch((e: unknown) => {
+        // we have nothing to leak here
+        throw new GraphQueryError(e);
+      })
+  ).beefyVaults.flatMap(
+    vault =>
+      vault.positions.flatMap(position =>
+        position.balanceBreakdown.flatMap(breakdown => ({
+          vault: { ...vault, positions: null },
+          position: { ...position, balanceBreakdown: null },
+          breakdown,
+        }))
+      )
+    // remove share tokens
+  );
 
-  const res = await graphClient
-    .TokenBreakdown(
+  const wrapperInvestorPositions = positions.filter(
+    p => p.position.investor.address.toLowerCase() === beefyWrapper.toLowerCase()
+  );
+  const nonWrapperPositions = positions.filter(
+    p => p.position.investor.address.toLowerCase() !== beefyWrapper.toLowerCase()
+  );
+
+  // if there are no wrapper positions, return the non wrapper positions
+  if (chain !== 'sonic' || wrapperInvestorPositions.length === 0) {
+    return nonWrapperPositions.map(p => ({
+      vault_address: p.vault.address,
+      underlying_token_address: p.breakdown.token?.address,
+      underlying_token_symbol: p.breakdown.token?.symbol,
+      investor_address: p.position.investor.address,
+      latest_share_balance: p.position.rawSharesBalance,
+      latest_underlying_balance: p.breakdown.rawBalance,
+    }));
+  }
+
+  if (wrapperInvestorPositions.length > 1) {
+    throw new Error('Multiple wrapper investor positions found, this should not happen');
+  }
+
+  const wrapperInvestorPosition = wrapperInvestorPositions[0];
+
+  const viemClient = getViemClient(chain);
+  const totalWrapperSupply = await viemClient.readContract({
+    address: silov2SonicUsdceWs,
+    abi: erc20Abi,
+    functionName: 'totalSupply',
+    blockNumber: block,
+  });
+
+  const rawBeetsData = await graphClient
+    .VaultBalanceBreakdown(
       {
         block_number: Number(block),
-        token_addresses: uniq(allProductAddresses) as string[],
+        vault_addresses_bytes: [beetsv3SonicBeefyusdceScusd],
+        vault_addresses_string: [beetsv3SonicBeefyusdceScusd],
       },
       { chainName: chain }
     )
@@ -73,29 +138,77 @@ export const getSiloRows = async (chain: ChainId, block: bigint) => {
       throw new GraphQueryError(e);
     });
 
-  const flattened = res.beefyVaults.flatMap(vault =>
-    vault.positions.flatMap(position =>
-      position.balanceBreakdown.flatMap(breakdown => ({
-        vault,
-        position,
-        breakdown,
+  if (rawBeetsData.beefyVaults.length !== 1) {
+    throw new Error('Beets data not found');
+  }
+
+  const beetsData = rawBeetsData.beefyVaults[0];
+  const totalWrapperSupplyDecimal = new Decimal(totalWrapperSupply.toString());
+  const beetsPositions = beetsData.positions.flatMap(p =>
+    p.balanceBreakdown
+      .filter(b => b.token?.address?.toLowerCase() === beefyWrapper.toLowerCase())
+      .flatMap(b => ({
+        ...p,
+        balanceBreakdown: b,
       }))
-    )
+      .map(b => ({
+        ...b,
+        beetsInvestorShareOfWrapper: new Decimal(b.balanceBreakdown.rawBalance).div(
+          totalWrapperSupplyDecimal
+        ),
+      }))
   );
 
-  return flattened
-    .map(f => ({
-      vault_address: f.vault.address,
-      underlying_token_address: f.breakdown.token?.address,
-      underlying_token_symbol: f.breakdown.token?.symbol,
-      investor_address: f.position.investor.address,
-      latest_share_balance: f.position.rawSharesBalance,
-      latest_underlying_balance: f.breakdown.rawBalance,
-      time_weighted_underlying_amount_1h: BigInt(f.breakdown.rawTimeWeightedBalance) / (60n * 60n),
-      // last_update_block: {
-      //   number: f.breakdown.lastUpdateBlock,
-      //   timestamp: f.breakdown.lastUpdateTimestamp,
-      // },
-    }))
-    .filter(f => f.latest_share_balance > 0n);
+  const beetsInvestorActualWrapperPosition = beetsPositions.map(beetsPosition => ({
+    vault_address: wrapperInvestorPosition.vault.address,
+    underlying_token_address: wrapperInvestorPosition.breakdown.token?.address,
+    underlying_token_symbol: wrapperInvestorPosition.breakdown.token?.symbol,
+    investor_address: beetsPosition.investor.address,
+    latest_share_balance: BigInt(
+      new Decimal(wrapperInvestorPosition.position.rawSharesBalance)
+        .times(beetsPosition.beetsInvestorShareOfWrapper)
+        .toFixed(0)
+    ),
+    latest_underlying_balance: BigInt(
+      new Decimal(wrapperInvestorPosition.breakdown.rawBalance)
+        .times(beetsPosition.beetsInvestorShareOfWrapper)
+        .toFixed(0)
+    ),
+  }));
+
+  const totalBeetsBalance = beetsInvestorActualWrapperPosition.reduce(
+    (acc, curr) => acc + curr.latest_underlying_balance,
+    0n
+  );
+  const totalBeetsShareBalance = beetsInvestorActualWrapperPosition.reduce(
+    (acc, curr) => acc + curr.latest_share_balance,
+    0n
+  );
+
+  const rows = beetsInvestorActualWrapperPosition
+    .concat(
+      nonWrapperPositions.map(p => ({
+        vault_address: p.vault.address,
+        underlying_token_address: p.breakdown.token?.address,
+        underlying_token_symbol: p.breakdown.token?.symbol,
+        investor_address: p.position.investor.address,
+        latest_share_balance: p.position.rawSharesBalance,
+        latest_underlying_balance: p.breakdown.rawBalance,
+      }))
+    )
+    // add the remaining balance of the wrapper position not in the beets positions
+    .concat([
+      {
+        vault_address: wrapperInvestorPosition.vault.address,
+        underlying_token_address: wrapperInvestorPosition.breakdown.token?.address,
+        underlying_token_symbol: wrapperInvestorPosition.breakdown.token?.symbol,
+        investor_address: wrapperInvestorPosition.position.investor.address,
+        latest_share_balance:
+          BigInt(wrapperInvestorPosition.position.rawSharesBalance) - totalBeetsShareBalance,
+        latest_underlying_balance:
+          BigInt(wrapperInvestorPosition.breakdown.rawBalance) - totalBeetsBalance,
+      },
+    ]);
+
+  return rows;
 };
