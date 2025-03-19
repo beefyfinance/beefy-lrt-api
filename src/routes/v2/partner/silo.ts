@@ -1,7 +1,6 @@
 import Decimal from 'decimal.js';
 import type { FastifyInstance, FastifyPluginOptions, FastifySchema } from 'fastify';
 import S from 'fluent-json-schema';
-import { uniq } from 'lodash';
 import { erc20Abi } from 'viem';
 import type { ChainId } from '../../../config/chains';
 import { bigintSchema } from '../../../schema/bigint';
