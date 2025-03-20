@@ -68,6 +68,10 @@ type Position = {
   investor_address: string;
   latest_share_balance: bigint;
   latest_underlying_balance: bigint;
+  breakdown_last_update_block: {
+    number: bigint;
+    timestamp: bigint;
+  };
 };
 
 export const getSiloRows = async (chain: ChainId, block: bigint): Promise<Position[]> => {
@@ -125,6 +129,10 @@ export const getSiloRows = async (chain: ChainId, block: bigint): Promise<Positi
       investor_address: p.position.investor.address,
       latest_share_balance: p.position.rawSharesBalance,
       latest_underlying_balance: p.breakdown.rawBalance,
+      breakdown_last_update_block: {
+        number: p.breakdown.lastUpdateBlock,
+        timestamp: p.breakdown.lastUpdateTimestamp,
+      },
     }));
 
   // if there are no wrapper positions, return the non wrapper positions
@@ -302,6 +310,7 @@ const unrollPooledPositions = (params: {
     investor_address: pos.investor,
     latest_share_balance: pos.shares,
     latest_underlying_balance: pos.underlying,
+    breakdown_last_update_block: poolContractPosition.breakdown_last_update_block,
   }));
 
   const newPositions = nonPoolContractPositions.concat(poolContractPositionDispatched);
