@@ -1,12 +1,11 @@
 import Decimal from 'decimal.js';
 import type { FastifyInstance, FastifyPluginOptions, FastifySchema } from 'fastify';
 import S from 'fluent-json-schema';
-import { type Hex, erc20Abi } from 'viem';
+import { type Hex } from 'viem';
 import type { ChainId } from '../../../config/chains';
 import { bigintSchema } from '../../../schema/bigint';
 import { chainSchema } from '../../../schema/chain';
 import { GraphQueryError } from '../../../utils/error';
-import { getViemClient } from '../../../utils/viemClient';
 import { getBeefyVaultConfig } from '../../../vault-breakdown/vault/getBeefyVaultConfig';
 import { graphClient } from '../graphClient';
 
@@ -81,7 +80,7 @@ export const getSiloRows = async (chain: ChainId, block: bigint): Promise<Positi
   const beetsPoolHoldingWrapperInVault = '0x43026d483f42fB35efe03c20B251142D022783f2';
   const beetsVaultHoldingWrapper = '0xbA1333333333a1BA1108E8412f11850A5C319bA9';
   const beefyWrapper = '0x7870ddFd5ACA4E977B2287e9A212bcbe8FC4135a';
-  const silov2SonicUsdceWs = '0xdb6E5dC4C6748EcECb97b565F6C074f24384fD07';
+  // const silov2SonicUsdceWs = '0xdb6E5dC4C6748EcECb97b565F6C074f24384fD07';
 
   const vaultConfig = await getBeefyVaultConfig(chain, v => {
     const exclude = [
