@@ -222,6 +222,14 @@ Token symbols: vETH
 
 ## Config
 
+Prod:
 - https://lrt.beefy.finance/api/v2/config/arbitrum/points-earning/kelp
 - https://lrt.beefy.finance/api/v2/config/arbitrum/points-earning/etherfi
+- https://lrt.beefy.finance/api/v2/config/arbitrum/points-earning/infrared
+
+Dev:
+- http://localhost:4000/api/v2/config/arbitrum/points-earning/kelp
+- http://localhost:4000/api/v2/config/arbitrum/points-earning/etherfi
+- http://localhost:4000/api/v2/config/arbitrum/points-earning/infrared
+
 

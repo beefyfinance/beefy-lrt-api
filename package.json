@@ -8,8 +8,9 @@
     "build": "tsc",
     "start": "node build/src/index.js",
     "dev": "ts-node-dev --require=dotenv/config src/index.ts",
-    "format": "biome check src/**/*.{ts,graphql}",
-    "format:fix": "biome check --write --unsafe src/**/*.{ts,graphql}",
+    "format": "biome check --write --unsafe src/**/*.{ts,graphql}",
+    "test:format": "biome check src/**/*.{ts,graphql}",
+    "test:ts": "tsc --noEmit",
     "package:check": "ncu",
     "package:fix": "ncu -u && npm install",
     "update:addressbook": "ncu --upgrade blockchain-addressbook viem && npm i",
@@ -29,7 +30,7 @@
     "@graphql-typed-document-node/core": "^3.2.0",
     "@types/lodash-es": "^4.17.12",
     "async-lock": "^1.4.1",
-    "blockchain-addressbook": "^0.51.17",
+    "blockchain-addressbook": "^0.52.11",
     "csv-stringify": "^6.5.0",
     "date-fns": "^3.6.0",
     "decimal.js": "^10.4.3",
@@ -39,7 +40,7 @@
     "lodash": "^4.17.21",
     "node-cache": "^5.1.2",
     "pino": "^8.19.0",
-    "viem": "^2.23.10"
+    "viem": "^2.25.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",

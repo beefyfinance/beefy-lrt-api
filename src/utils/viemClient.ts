@@ -2,6 +2,7 @@ import { http, type Chain as ViemChain, createPublicClient } from 'viem';
 import {
   arbitrum,
   base,
+  berachain,
   bsc,
   fraxtal,
   kava,
@@ -34,13 +35,14 @@ function applyEnv(chainId: ChainId, viemChain: ViemChain): ViemChain {
 }
 
 const mapping: Record<ChainId, ViemChain> = {
-  linea: applyEnv('linea', linea),
   arbitrum: applyEnv('arbitrum', arbitrum),
   base: applyEnv('base', base),
+  berachain: applyEnv('berachain', berachain),
   bsc: applyEnv('bsc', bsc),
   ethereum: applyEnv('ethereum', mainnet),
   fraxtal: applyEnv('fraxtal', fraxtal),
   kava: applyEnv('kava', kava),
+  linea: applyEnv('linea', linea),
   lisk: applyEnv('lisk', lisk),
   manta: applyEnv('manta', manta),
   mantle: applyEnv('mantle', mantle),

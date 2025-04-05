@@ -19,7 +19,9 @@ const dlcbtc = ['DLCBTC'];
 const dolomite = ['dUSDC'];
 const ethena = ['USDe', 'sUSDe'];
 const etherfi = ['eETH', 'weETH', 'weETH.mode'];
+const infrared = ['infrared']; // whitelisted by platform
 const kelp = ['rsETH', 'wrsETH'];
+const lisk = ['lisk']; // this token does not exist
 const lynex = ['inETH', 'ainETH'];
 const renzo = ['ezETH'];
 const resolv = ['wstUSR'];
@@ -28,7 +30,6 @@ const solv = ['SolvBTC.BBN'];
 const stakestone = ['STONE'];
 const vector = ['vETH'];
 const yei = ['yei']; // this token does not exist
-const lisk = ['lisk']; // this token does not exist
 
 const providers = {
   anzen,
@@ -37,6 +38,7 @@ const providers = {
   dolomite,
   ethena,
   etherfi,
+  infrared,
   kelp,
   lisk,
   lynex,
@@ -61,6 +63,11 @@ export const chains = toChainMap([
   {
     id: 'base',
     name: 'Base',
+    providers,
+  },
+  {
+    id: 'berachain',
+    name: 'Berachain',
     providers,
   },
   {
