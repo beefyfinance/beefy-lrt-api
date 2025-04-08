@@ -25,6 +25,7 @@ const breakdownMethods: Record<BeefyProtocolType, BreakdownMethod> = {
   curve: getCurveVaultBreakdown,
   gamma: getGammaVaultBreakdown,
   ichi: getGammaVaultBreakdown,
+  infrared: getGammaVaultBreakdown, // this is incorrect, but idk how to breakdown infrared yet
   pendle_equilibria: getPendleVaultBreakdown,
   solidly: getSolidlyVaultBreakdown,
 };
