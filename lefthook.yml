@@ -1,0 +1,14 @@
+pre-commit:
+  parallel: true
+  commands:
+    biome:
+      glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
+      run: npm run format
+      stage_fixed: true
+
+pre-push:
+  parallel: true
+  commands:
+    types:
+      glob: "*.{ts,tsx}"
+      run: npm run test:ts

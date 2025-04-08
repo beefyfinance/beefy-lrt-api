@@ -47,8 +47,7 @@
     "@types/async-lock": "^1.4.2",
     "@types/node": "^20.11.30",
     "dotenv": "^16.4.5",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.2.2",
+    "lefthook": "^1.11.7",
     "npm-check-updates": "^16.14.18",
     "pino-pretty": "^11.0.0",
     "ts-node": "^10.9.2",
@@ -57,9 +56,6 @@
   },
   "engines": {
     "node": "^20.10.0"
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx,graphql,json}": "biome format --write"
   },
   "packageManager": "yarn@1.22.22"
 }

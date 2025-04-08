@@ -1,4 +1,4 @@
-import { type Hex, getContract } from 'viem';
+import { getContract } from 'viem';
 import type { BeefyViemClient } from '../../../utils/viemClient';
 import { BeefyVaultV7Abi } from '../../abi/BeefyVaultV7Abi';
 import type { BeefyVault } from '../../vault/getBeefyVaultConfig';
@@ -15,8 +15,7 @@ export const getInfraredVaultBreakdown = async (
     abi: BeefyVaultV7Abi,
   });
 
-  const [vaultWantBalance, vaultTotalSupply] = await Promise.all([
-    vaultContract.read.balance({ blockNumber }),
+  const [ vaultTotalSupply] = await Promise.all([
     vaultContract.read.totalSupply({ blockNumber }),
   ]);
 
