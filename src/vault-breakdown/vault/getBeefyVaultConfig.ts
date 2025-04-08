@@ -54,6 +54,7 @@ export type BeefyProtocolType =
   | 'curve'
   | 'gamma'
   | 'ichi'
+  | 'infrared'
   | 'pendle_equilibria'
   | 'solidly';
 
@@ -68,6 +69,7 @@ type ApiPlatformId =
   | 'equalizer'
   | 'gamma'
   | 'ichi'
+  | 'infrared'
   | 'lendle'
   | 'lynex'
   | 'magpie'
@@ -161,6 +163,7 @@ const protocol_map: Record<ApiPlatformId, BeefyProtocolType> = {
   equalizer: 'solidly',
   gamma: 'gamma',
   ichi: 'ichi',
+  infrared: 'infrared',
   lendle: 'aave',
   lynex: 'solidly',
   magpie: 'pendle_equilibria',
