@@ -90,6 +90,17 @@ Dev
 - http://localhost:4000/api/v2/partner/etherfi/optimism/points-integration/user-balance?blockNumber=124535424
 
 
+## Infrared
+
+Token symbols: vault whitelist
+
+Prod
+- https://lrt.beefy.finance/api/v2/partner/infrared/berachain/10419541/balances
+
+Dev
+- http://localhost:4000/api/v2/partner/infrared/berachain/10419541/balances
+
+
 ## Kelp
 
 Token symbols: rsETH, wrsETH

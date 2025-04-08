@@ -6,6 +6,7 @@ import { getBalancerAuraVaultBreakdown } from './protocol_type/balancer';
 import { getBeefyClmManagerBreakdown, getBeefyClmVaultBreakdown } from './protocol_type/beefy_clm';
 import { getCurveVaultBreakdown } from './protocol_type/curve';
 import { getGammaVaultBreakdown } from './protocol_type/gamma';
+import { getInfraredVaultBreakdown } from './protocol_type/infrared';
 import { getPendleVaultBreakdown } from './protocol_type/pendle';
 import { getSolidlyVaultBreakdown } from './protocol_type/solidly';
 import type { BeefyVaultBreakdown } from './types';
@@ -25,7 +26,7 @@ const breakdownMethods: Record<BeefyProtocolType, BreakdownMethod> = {
   curve: getCurveVaultBreakdown,
   gamma: getGammaVaultBreakdown,
   ichi: getGammaVaultBreakdown,
-  infrared: getGammaVaultBreakdown, // this is incorrect, but idk how to breakdown infrared yet
+  infrared: getInfraredVaultBreakdown,
   pendle_equilibria: getPendleVaultBreakdown,
   solidly: getSolidlyVaultBreakdown,
 };
