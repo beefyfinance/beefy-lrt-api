@@ -4,7 +4,6 @@
   "license": "gpl-3.0",
   "private": true,
   "scripts": {
-    "prepare": "husky",
     "build": "tsc",
     "start": "node build/src/index.js",
     "dev": "ts-node-dev --require=dotenv/config src/index.ts",
