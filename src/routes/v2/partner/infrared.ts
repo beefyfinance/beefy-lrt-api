@@ -12,6 +12,7 @@ import { getBeefyVaultConfig } from "../../../vault-breakdown/vault/getBeefyVaul
 import { getTokenBalances } from "../../../vault-breakdown/vault/getTokenBalances";
 import { Hex } from "viem";
 import { getViemClient } from "../../../utils/viemClient";
+import { FriendlyError } from "../../../utils/error";
 
 export default async function (
   instance: FastifyInstance,
@@ -59,17 +60,28 @@ export default async function (
       async (request, reply) => {
         const { contract, block } = request.params;
         const chain: ChainId = "berachain";
-        const res = await getInfraredRows(
-          chain,
-          BigInt(block),
-          contract as Hex
-        );
-        if (!res) {
-          reply.status(404);
-          reply.send("Not found");
-          return;
+
+        try {
+          const res = await getInfraredRows(
+            chain,
+            BigInt(block),
+            contract as Hex
+          );
+          if (!res) {
+            reply.status(404);
+            reply.send("Not found");
+            return;
+          }
+          reply.send(res);
+        } catch (e) {
+          if (e instanceof FriendlyError) {
+            reply.status(404);
+            reply.send({ error: e.message });
+          } else {
+            reply.status(500);
+            reply.send({ error: "Internal server error" });
+          }
         }
-        reply.send(res);
       }
     );
   }
@@ -85,7 +97,7 @@ export const getInfraredRows = async (
   const asyncCache = getAsyncCache();
 
   const balances = await asyncCache.wrap(
-    `infrared:breakdown:${chain}:${blockNumber.toString()}`,
+    `infrared:breakdown:${chain}:${contract.toLowerCase()}:${blockNumber.toString()}`,
     30_000,
     async () => {
       const allVaultConfigs = await getBeefyVaultConfig(
