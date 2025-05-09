@@ -134,7 +134,6 @@ export const getInfraredRows = async (
       return block.timestamp;
     }
   );
-  console.log(balances);
 
   return {
     data: balances
