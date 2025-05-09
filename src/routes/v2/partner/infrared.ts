@@ -78,8 +78,7 @@ export default async function (
             reply.status(404);
             reply.send({ error: e.message });
           } else {
-            reply.status(500);
-            reply.send({ error: "Internal server error" });
+            throw e;
           }
         }
       }
