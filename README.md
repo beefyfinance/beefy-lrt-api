@@ -95,10 +95,10 @@ Dev
 Token symbols: vault whitelist
 
 Prod
-- https://lrt.beefy.finance/api/v2/partner/infrared/berachain/10419541/balances
+- https://lrt.beefy.finance/api/v2/partner/infrared/ir_points_program/0x9AA6183B8E1148969b082B5585b8A7021fA1b6ce/4779606
 
 Dev
-- http://localhost:4000/api/v2/partner/infrared/berachain/10419541/balances
+- http://localhost:4000/api/v2/partner/infrared/ir_points_program/0x9AA6183B8E1148969b082B5585b8A7021fA1b6ce/4779606
 
 
 ## Kelp
