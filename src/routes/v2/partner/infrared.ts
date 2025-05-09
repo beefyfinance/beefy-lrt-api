@@ -7,11 +7,9 @@ import S from "fluent-json-schema";
 import { bigintSchema } from "../../../schema/bigint";
 import { getAsyncCache } from "../../../utils/async-lock";
 import { ChainId } from "../../../config/chains";
-import { getUserTVLAtBlock } from "../../../vault-breakdown/fetchAllUserBreakdown";
 import { addressSchema } from "../../../schema/address";
 import { getBeefyVaultConfig } from "../../../vault-breakdown/vault/getBeefyVaultConfig";
 import { getTokenBalances } from "../../../vault-breakdown/vault/getTokenBalances";
-import { getTokenConfigBySymbol } from "../../../utils/addressbook";
 import { Hex } from "viem";
 import { getViemClient } from "../../../utils/viemClient";
 
