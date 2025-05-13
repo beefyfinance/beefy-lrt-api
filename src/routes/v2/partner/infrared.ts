@@ -47,7 +47,7 @@ export default async function (
             S.array().items(
               S.object()
                 .prop("address", addressSchema)
-                .prop("amount", bigintSchema)
+                .prop("balance", bigintSchema)
             )
           )
           .prop("timestamp", bigintSchema),
@@ -140,7 +140,7 @@ export const getInfraredRows = async (
       .filter((b) => b.balance > 0n)
       .map((b) => ({
         address: b.user_address,
-        amount: b.balance.toString(),
+        balance: b.balance.toString(),
       })),
     timestamp: blockTimestamp,
   };
