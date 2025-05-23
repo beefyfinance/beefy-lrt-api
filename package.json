@@ -29,7 +29,7 @@
     "@graphql-typed-document-node/core": "^3.2.0",
     "@types/lodash-es": "^4.17.12",
     "async-lock": "^1.4.1",
-    "blockchain-addressbook": "^0.53.28",
+    "blockchain-addressbook": "^0.54.14",
     "csv-stringify": "^6.5.0",
     "date-fns": "^3.6.0",
     "decimal.js": "^10.4.3",
