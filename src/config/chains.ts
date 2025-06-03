@@ -19,6 +19,7 @@ const dlcbtc = ['DLCBTC'];
 const dolomite = ['dUSDC'];
 const ethena = ['USDe', 'sUSDe'];
 const etherfi = ['eETH', 'weETH', 'weETH.mode'];
+const falcon = ['sUSDf', 'USDf'];
 const infrared = ['infrared']; // whitelisted by platform
 const kelp = ['rsETH', 'wrsETH'];
 const lisk = ['lisk']; // this token does not exist
@@ -38,6 +39,7 @@ const providers = {
   dolomite,
   ethena,
   etherfi,
+  falcon,
   infrared,
   kelp,
   lisk,

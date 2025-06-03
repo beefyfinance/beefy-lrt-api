@@ -90,6 +90,17 @@ Dev
 - http://localhost:4000/api/v2/partner/etherfi/optimism/points-integration/user-balance?blockNumber=124535424
 
 
+## Falcon
+
+Token symbols: sUSDf, USDf
+
+Prod:
+- https://lrt.beefy.finance/api/v2/partner/falcon/ethereum/22622951/shares
+
+Dev:
+- http://localhost:4000/api/v2/partner/falcon/ethereum/22622951/shares
+
+
 ## Infrared
 
 Token symbols: vault whitelist
