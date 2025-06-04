@@ -24,7 +24,6 @@ const infrared = ['infrared']; // whitelisted by platform
 const kelp = ['rsETH', 'wrsETH'];
 const lisk = ['lisk']; // this token does not exist
 const lynex = ['inETH', 'ainETH'];
-const renzo = ['ezETH'];
 const resolv = ['wstUSR'];
 const rings = ['scUSD'];
 const solv = ['SolvBTC.BBN'];
@@ -44,7 +43,6 @@ const providers = {
   kelp,
   lisk,
   lynex,
-  renzo,
   resolv,
   rings,
   solv,

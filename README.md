@@ -164,16 +164,6 @@ Token symbols: STONE
 - https://lrt.beefy.finance/api/v2/balances/stakestone/manta/2822716
 
 
-## Renzo
-
-Token symbols: ezETH
-
-- https://lrt.beefy.finance/api/v2/balances/renzo/arbitrum/208382994
-- https://lrt.beefy.finance/api/v2/balances/renzo/base/14108248
-- https://lrt.beefy.finance/api/v2/balances/renzo/ethereum/19810011
-- https://lrt.beefy.finance/api/v2/balances/renzo/linea/4314151
-- https://lrt.beefy.finance/api/v2/balances/renzo/mode/8184560
-
 ## Resolv
 
 Token symbols: wstUSR
