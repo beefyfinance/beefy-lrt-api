@@ -103,7 +103,8 @@ export const getInfraredRows = async (
         chain,
         (vault) =>
           vault.pointStructureIds.includes("infrared") &&
-          vault.vault_address.toLowerCase() === contract.toLowerCase()
+          (vault.vault_address.toLowerCase() === contract.toLowerCase() ||
+            vault.strategy_address.toLowerCase() === contract.toLowerCase())
       );
 
       if (allVaultConfigs.length === 0) {
