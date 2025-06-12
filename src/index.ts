@@ -1,14 +1,20 @@
-import FastifyCors from '@fastify/cors';
-import FastifyEtag from '@fastify/etag';
-import FastifyHelmet from '@fastify/helmet';
-import FastifyRateLimit from '@fastify/rate-limit';
-import FastifyUnderPressure from '@fastify/under-pressure';
-import Decimal from 'decimal.js';
-import Fastify from 'fastify';
-import { API_CORS_ORIGIN, API_ENV, API_PORT, API_RATE_LIMIT } from './config/env';
-import routes from './routes/index';
-import { FriendlyError } from './utils/error';
-import { defaultLogger } from './utils/log';
+import FastifyCors from "@fastify/cors";
+import FastifyEtag from "@fastify/etag";
+import FastifyHelmet from "@fastify/helmet";
+import FastifyRateLimit from "@fastify/rate-limit";
+import FastifyUnderPressure from "@fastify/under-pressure";
+import Decimal from "decimal.js";
+import Fastify from "fastify";
+import {
+  API_CORS_ORIGIN,
+  API_ENV,
+  API_PORT,
+  API_RATE_LIMIT,
+} from "./config/env";
+import routes from "./routes/index";
+import { FriendlyError } from "./utils/error";
+import { defaultLogger } from "./utils/log";
+import { getApiKeysEnv } from "./utils/env";
 
 Decimal.set({
   // make sure we have enough precision
@@ -27,43 +33,51 @@ server.register(async (instance, _opts, done) => {
   instance
     .register(FastifyUnderPressure)
     .register(FastifyHelmet, {
-      contentSecurityPolicy: API_ENV === 'production',
+      contentSecurityPolicy: API_ENV === "production",
     })
     .register(FastifyRateLimit, {
       global: true,
-      timeWindow: '1 minute',
+      timeWindow: "1 minute",
       max: API_RATE_LIMIT,
       continueExceeding: true,
       skipOnError: false,
       enableDraftSpec: true,
+      allowList: (req) => {
+        const apiKeys = getApiKeysEnv();
+        const apiKeyHeader = req.headers["x-api-key"];
+        if (typeof apiKeyHeader !== "string") {
+          return false;
+        }
+        return apiKeys.includes(apiKeyHeader);
+      },
       errorResponseBuilder: (_request, context) => ({
         statusCode: 429,
-        name: 'RateLimitExceededError',
-        error: 'Too Many Requests',
+        name: "RateLimitExceededError",
+        error: "Too Many Requests",
         message: `Rate limit exceeded, retry in ${context.after}`,
       }),
     })
     .register(FastifyEtag)
     .register(FastifyCors, {
-      methods: ['GET'],
-      origin: API_ENV === 'production' ? API_CORS_ORIGIN : true,
+      methods: ["GET"],
+      origin: API_ENV === "production" ? API_CORS_ORIGIN : true,
     })
-    .setReplySerializer(payload =>
+    .setReplySerializer((payload) =>
       JSON.stringify(payload, (_key, value) =>
-        typeof value === 'bigint' ? value.toString() : value
+        typeof value === "bigint" ? value.toString() : value
       )
     )
-    .addHook('onSend', async (_req, reply) => {
+    .addHook("onSend", async (_req, reply) => {
       if (reply.raw.statusCode !== 200) {
-        reply.header('cache-control', 'no-cache, no-store, must-revalidate');
+        reply.header("cache-control", "no-cache, no-store, must-revalidate");
       }
     })
     .setErrorHandler((error, _request, reply) => {
-      reply.header('cache-control', 'no-cache, no-store, must-revalidate');
-      if ('metaMessages' in error) {
+      reply.header("cache-control", "no-cache, no-store, must-revalidate");
+      if ("metaMessages" in error) {
         error.metaMessages = undefined;
       }
-      if (API_ENV === 'development') {
+      if (API_ENV === "development") {
         reply.send(error);
       } else {
         defaultLogger.error(error);
@@ -75,12 +89,12 @@ server.register(async (instance, _opts, done) => {
         }
       }
     })
-    .register(routes, { prefix: '/api' });
+    .register(routes, { prefix: "/api" });
 
   done();
 });
 
-server.listen({ port: API_PORT, host: '0.0.0.0' }, err => {
+server.listen({ port: API_PORT, host: "0.0.0.0" }, (err) => {
   if (err) {
     defaultLogger.error(err);
     process.exit(1);

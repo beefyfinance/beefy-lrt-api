@@ -30,3 +30,24 @@ export function getRequiredStringEnv(key: string): string {
 
   return value;
 }
+
+let apiKeysCache: string[] | null = null;
+export function getApiKeysEnv(): string[] {
+  if (apiKeysCache !== null) {
+    return apiKeysCache;
+  }
+
+  const value = process.env.API_KEYS;
+  if (value === undefined || value.length === 0) {
+    apiKeysCache = [];
+    return [];
+  }
+
+  const parsed = value
+    .split(',')
+    .map(key => key.trim())
+    .filter(key => key.length > 0);
+
+  apiKeysCache = parsed;
+  return parsed;
+}
