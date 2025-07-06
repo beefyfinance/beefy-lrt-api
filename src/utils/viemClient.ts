@@ -1,4 +1,4 @@
-import { http, type Chain as ViemChain, createPublicClient } from 'viem';
+import { http, type Chain as ViemChain, createPublicClient, defineChain } from 'viem';
 import {
   arbitrum,
   base,
@@ -18,6 +18,31 @@ import {
 } from 'viem/chains';
 import type { ChainId } from '../config/chains';
 import { createCachedFactoryByChainId } from './factory';
+
+const hyperevm = defineChain({
+  id: 999,
+  name: 'HyperEVM',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Hyperliquid',
+    symbol: 'HYPE',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.hyperliquid.xyz/evm'],
+      webSocket: ['wss://rpc.hyperliquid.xyz/evm'],
+    },
+  },
+  blockExplorers: {
+    default: { name: 'Explorer', url: '"https://www.hyperscan.com' },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 13051,
+    },
+  },
+});
 
 function applyEnv(chainId: ChainId, viemChain: ViemChain): ViemChain {
   const url = process.env[`${chainId.toUpperCase()}_RPC`];
@@ -50,6 +75,7 @@ const mapping: Record<ChainId, ViemChain> = {
   optimism: applyEnv('optimism', optimism),
   sei: applyEnv('sei', sei),
   sonic: applyEnv('sonic', sonic),
+  hyperevm: applyEnv('hyperevm', hyperevm),
 };
 
 export const getViemClient = createCachedFactoryByChainId(chainId => {

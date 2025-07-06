@@ -101,6 +101,15 @@ Dev:
 - http://localhost:4000/api/v2/partner/falcon/ethereum/22622951/shares
 
 
+## Hybra
+
+Prod:
+- https://lrt.beefy.finance/api/v2/partner/hybra/hyperevm/7697114/time-weighted-token-breakdown
+
+Dev:
+- http://localhost:4000/api/v2/partner/hybra/hyperevm/7697114/time-weighted-token-breakdown
+
+
 ## Infrared
 
 Token symbols: vault whitelist

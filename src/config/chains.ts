@@ -20,8 +20,10 @@ const dolomite = ['dUSDC'];
 const ethena = ['USDe', 'sUSDe'];
 const etherfi = ['eETH', 'weETH', 'weETH.mode'];
 const falcon = ['sUSDf', 'USDf'];
+const hybra = ['hybra']; // this token does not exist
 const infrared = ['infrared']; // whitelisted by platform
 const kelp = ['rsETH', 'wrsETH'];
+const kittenswap = ['kittenswap']; // this token does not exist
 const lisk = ['lisk']; // this token does not exist
 const lynex = ['inETH', 'ainETH'];
 const resolv = ['wstUSR'];
@@ -39,8 +41,10 @@ const providers = {
   ethena,
   etherfi,
   falcon,
+  hybra,
   infrared,
   kelp,
+  kittenswap,
   lisk,
   lynex,
   resolv,
@@ -83,6 +87,11 @@ export const chains = toChainMap([
   {
     id: 'fraxtal',
     name: 'Fraxtal',
+    providers,
+  },
+  {
+    id: 'hyperevm',
+    name: 'Hyperevm',
     providers,
   },
   {

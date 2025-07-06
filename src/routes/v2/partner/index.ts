@@ -9,6 +9,7 @@ import yei from "./yei";
 import silo from "./silo";
 import infrared from "./infrared";
 import falcon from "./falcon";
+import hybra from "./hybra";
 
 export default async function (
   instance: FastifyInstance,
@@ -18,6 +19,7 @@ export default async function (
   instance.register(ethena, { prefix: "/ethena" });
   instance.register(etherfi, { prefix: "/etherfi" });
   instance.register(falcon, { prefix: "/falcon" });
+  instance.register(hybra, { prefix: "/hybra" });
   instance.register(infrared, { prefix: "/infrared" });
   instance.register(kinetix, { prefix: "/kinetix" });
   instance.register(lisk, { prefix: "/lisk" });
