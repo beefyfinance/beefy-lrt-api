@@ -7,7 +7,10 @@ import S from "fluent-json-schema";
 import { bigintSchema } from "../../../schema/bigint";
 import { GraphQueryError } from "../../../utils/error";
 import { graphClient } from "../graphClient";
-import { getBeefyVaultConfig } from "../../../vault-breakdown/vault/getBeefyVaultConfig";
+import {
+  BeefyVault,
+  getBeefyVaultConfig,
+} from "../../../vault-breakdown/vault/getBeefyVaultConfig";
 import { uniq } from "lodash";
 
 export default async function (
@@ -89,8 +92,21 @@ export const getHybraRows = async (block: bigint) => {
     )
   );
 
+  const configByAddress = vaultConfig.reduce((acc, v) => {
+    acc[v.vault_address.toLowerCase()] = v;
+    for (const pool of v.reward_pools) {
+      acc[pool.reward_pool_address.toLowerCase()] = v;
+    }
+    for (const boost of v.boosts) {
+      acc[boost.boost_address.toLowerCase()] = v;
+    }
+    return acc;
+  }, {} as Record<string, BeefyVault>);
+
   return flattened.map((f) => ({
     vault_address: f.vault.address,
+    strategy_address:
+      configByAddress[f.vault.address.toLowerCase()].strategy_address,
     underlying_token_address: f.breakdown.token?.address,
     underlying_token_symbol: f.breakdown.token?.symbol,
     investor_address: f.position.investor.address,
