@@ -58,16 +58,8 @@ export const getFalconRows = async (block: bigint) => {
   const chain = "ethereum";
   const asyncCache = getAsyncCache();
 
-  const configs = await getBeefyVaultConfig(
-    chain,
-    (v) =>
-      v.pointStructureIds.includes("falcon-miles") ||
-      // whitelist while the points.json update is not deployed
-      [
-        "pendle-susdf-25sep25",
-        "pendle-eqb-susdf-25sep25",
-        "curve-usdc-usdf",
-      ].includes(v.id)
+  const configs = await getBeefyVaultConfig(chain, (v) =>
+    v.pointStructureIds.includes("falcon-miles")
   );
 
   const allAddresses = configs
