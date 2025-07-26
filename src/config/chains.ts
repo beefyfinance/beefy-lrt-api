@@ -24,7 +24,6 @@ const hybra = ['hybra']; // this token does not exist
 const infrared = ['infrared']; // whitelisted by platform
 const kelp = ['rsETH', 'wrsETH'];
 const kittenswap = ['kittenswap']; // this token does not exist
-const lisk = ['lisk']; // this token does not exist
 const lynex = ['inETH', 'ainETH'];
 const resolv = ['wstUSR'];
 const rings = ['scUSD'];
@@ -45,7 +44,6 @@ const providers = {
   infrared,
   kelp,
   kittenswap,
-  lisk,
   lynex,
   resolv,
   rings,

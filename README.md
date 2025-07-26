@@ -148,16 +148,6 @@ Dev
 
 - https://lrt.beefy.finance/api/v2/partner/kinetix/kava/10419541/time-weighted-underlying
 
-
-## Lisk
-
-Prod:
-- https://lrt.beefy.finance/api/v2/partner/lisk/lisk/12971772/time-weighted-token-breakdown
-
-Dev:
-- http://localhost:4000/api/v2/partner/lisk/lisk/12971772/time-weighted-token-breakdown
-
-
 ## Lynex
 
 Token symbols: inETH, ainETH
