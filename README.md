@@ -10,6 +10,17 @@ Token symbols: USDz
 
 - https://lrt.beefy.finance/api/v2/balances/anzen/base/15505804
 
+## Beefy
+
+Prod:
+
+- https://lrt.beefy.finance/api/v2/beefy/begems/summary
+- https://lrt.beefy.finance/api/v2/beefy/begems/user/0x539460bd8d7d6130ce6c4a65c0b59da3b3d2da42
+
+Dev:
+- http://localhost:4000/api/v2/beefy/begems/summary
+- http://localhost:4000/api/v2/beefy/begems/user/0x539460bd8d7d6130ce6c4a65c0b59da3b3d2da42
+
 
 ## Bedrock
 
