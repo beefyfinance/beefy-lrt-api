@@ -141,7 +141,7 @@ const getBeGemsData = async (): Promise<BeGemsData> => {
       logger.info("Fetching fresh beGEMS data from Sentio API");
 
       const response = await fetchWithRetry(
-        "https://endpoint.sentio.xyz/rxp/beefy-clm-sonic-sentio/sonic_global_twtvl?cache_policy.force_refresh=false&cache_policy.ttl_secs=86400&size=100000",
+        "https://endpoint.sentio.xyz/rxp/beefy-clm-sonic-sentio/sonic_twtvl_global_season2?cache_policy.force_refresh=false&cache_policy.ttl_secs=86400&size=100000",
         {
           method: "POST",
           headers: {
