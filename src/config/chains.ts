@@ -13,44 +13,44 @@ function toChainMap<T extends ReadonlyArray<Chain>>(arr: T) {
   };
 }
 
-const anzen = ['USDz' /*, 'sUSDz'*/];
-const bedrock = ['uniETH'];
-const dlcbtc = ['DLCBTC'];
-const dolomite = ['dUSDC'];
+// const anzen = ["USDz" /*, 'sUSDz'*/];
+// const bedrock = ["uniETH"];
+// const dlcbtc = ["DLCBTC"];
+// const dolomite = ["dUSDC"];
 const ethena = ['USDe', 'sUSDe'];
 const etherfi = ['eETH', 'weETH', 'weETH.mode'];
 const falcon = ['sUSDf', 'USDf'];
 const hybra = ['hybra']; // this token does not exist
 const infrared = ['infrared']; // whitelisted by platform
-const kelp = ['rsETH', 'wrsETH'];
-const kittenswap = ['kittenswap']; // this token does not exist
+// const kelp = ["rsETH", "wrsETH"];
+// const kittenswap = ["kittenswap"]; // this token does not exist
 const lynex = ['inETH', 'ainETH'];
 const resolv = ['wstUSR'];
 const rings = ['scUSD'];
 const solv = ['SolvBTC.BBN'];
-const stakestone = ['STONE'];
-const vector = ['vETH'];
-const yei = ['yei']; // this token does not exist
+// const stakestone = ['STONE'];
+// const vector = ["vETH"];
+// const yei = ['yei']; // this token does not exist
 
 const providers = {
-  anzen,
-  bedrock,
-  dlcbtc,
-  dolomite,
+  // anzen,
+  // bedrock,
+  // dlcbtc,
+  // dolomite,
   ethena,
   etherfi,
   falcon,
   hybra,
   infrared,
-  kelp,
-  kittenswap,
+  // kelp,
+  // kittenswap,
   lynex,
   resolv,
   rings,
   solv,
-  stakestone,
-  vector,
-  yei,
+  // stakestone,
+  // vector,
+  // yei,
 };
 
 export type ProviderId = keyof typeof providers;
