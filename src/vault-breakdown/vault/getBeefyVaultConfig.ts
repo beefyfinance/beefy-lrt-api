@@ -55,6 +55,7 @@ export type BeefyProtocolType =
   | "gamma"
   | "ichi"
   | "infrared"
+  | "euler"
   | "pendle_equilibria"
   | "solidly";
 
@@ -77,6 +78,7 @@ type ApiPlatformId =
   | "mendi"
   | "silo"
   | "nile"
+  | "euler"
   | "swapx"
   | "velodrome";
 
@@ -179,6 +181,7 @@ const protocol_map: Record<ApiPlatformId, BeefyProtocolType> = {
   swapx: "ichi",
   beethovenx: "balancer_aura",
   silo: "balancer",
+  euler: "euler",
 };
 
 export const getBeefyVaultConfig = async (

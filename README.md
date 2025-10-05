@@ -176,13 +176,13 @@ Token symbols: STONE
 
 ## Resolv
 
-Token symbols: wstUSR
-
 Dev:
-- http://localhost:4000/api/v2/breakdown/ethereum/provider-token-balance/resolv/21624089
+- http://localhost:4000/api/v2/partner/resolv/points/plasma?block=2733546&page=1
+- http://localhost:4000/api/v2/partner/resolv/points/plasma?block=2733546&page=1&pageSize=10&debug=true
 
 Prod:
-- https://lrt.beefy.finance/api/v2/breakdown/ethereum/provider-token-balance/resolv/21624089
+- https://lrt.beefy.finance/api/v2/partner/resolv/points/plasma?block=2733546&page=1
+- https://lrt.beefy.finance/api/v2/partner/resolv/points/plasma?block=2733546&page=1&pageSize=10&debug=true
 
 
 

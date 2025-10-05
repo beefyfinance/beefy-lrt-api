@@ -9,6 +9,7 @@ import silo from "./silo";
 import infrared from "./infrared";
 import falcon from "./falcon";
 import hybra from "./hybra";
+import resolv from "./resolv";
 
 export default async function (
   instance: FastifyInstance,
@@ -23,6 +24,7 @@ export default async function (
   // instance.register(kinetix, { prefix: "/kinetix" });
   instance.register(rings, { prefix: "/rings" });
   instance.register(silo, { prefix: "/silo" });
+  instance.register(resolv, { prefix: "/resolv" });
   // instance.register(swell, { prefix: "/swell" });
   // instance.register(yei, { prefix: "/yei" });
   done();

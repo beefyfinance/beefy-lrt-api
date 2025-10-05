@@ -10,6 +10,15 @@ export const getTokenConfigBySymbol = (chainId: ChainId, symbol: string): Token 
   return addressBook[chainId]?.tokens[symbol] ?? null;
 };
 
+export const getTokenConfigByAddress = (chainId: ChainId, address: Hex): Token | null => {
+  for (const token of Object.values(addressBook[chainId]?.tokens ?? {})) {
+    if (token.address.toLowerCase() === address.toLowerCase()) {
+      return token;
+    }
+  }
+  return null;
+};
+
 export const getWNativeToken = (chainId: ChainId): Token => {
   const token = addressBook[chainId]?.tokens.WNATIVE;
   if (!token) {

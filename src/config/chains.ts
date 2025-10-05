@@ -25,7 +25,7 @@ const infrared = ['infrared']; // whitelisted by platform
 // const kelp = ["rsETH", "wrsETH"];
 // const kittenswap = ["kittenswap"]; // this token does not exist
 const lynex = ['inETH', 'ainETH'];
-const resolv = ['wstUSR'];
+const resolv = ['resolv']; // this token does not exist
 const rings = ['scUSD'];
 const solv = ['SolvBTC.BBN'];
 // const stakestone = ['STONE'];
@@ -125,6 +125,11 @@ export const chains = toChainMap([
   {
     id: 'optimism',
     name: 'Optimism',
+    providers,
+  },
+  {
+    id: 'plasma',
+    name: 'Plasma',
     providers,
   },
   {

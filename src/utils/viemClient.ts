@@ -13,6 +13,7 @@ import {
   mantle,
   mode,
   optimism,
+  plasma,
   sei,
   sonic,
 } from 'viem/chains';
@@ -73,6 +74,7 @@ const mapping: Record<ChainId, ViemChain> = {
   mantle: applyEnv('mantle', mantle),
   mode: applyEnv('mode', mode),
   optimism: applyEnv('optimism', optimism),
+  plasma: applyEnv('plasma', plasma),
   sei: applyEnv('sei', sei),
   sonic: applyEnv('sonic', sonic),
   hyperevm: applyEnv('hyperevm', hyperevm),
