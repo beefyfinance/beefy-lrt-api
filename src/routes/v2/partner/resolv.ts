@@ -121,26 +121,24 @@ export const getResolvRows = async ({
       )
   );
 
-  const decimalizedBalances = balances
-    .filter((b) => b.token_balance.balance > 0n)
-    .map((b) => {
-      const token = getTokenConfigByAddress(chain, b.token_address);
-      if (!token) {
-        throw new FriendlyError(
-          `Token not found for address ${b.token_address}. Please ping devz to add it to the address book.`
-        );
-      }
+  const decimalizedBalances = balances.map((b) => {
+    const token = getTokenConfigByAddress(chain, b.token_address);
+    if (!token) {
+      throw new FriendlyError(
+        `Token not found for address ${b.token_address}. Please ping devz to add it to the address book.`
+      );
+    }
 
-      const decimalizedBalance = new Decimal(
-        b.token_balance.balance.toString(10)
-      ).div(new Decimal(10).pow(token.decimals));
-      return {
-        user_address: b.user_address,
-        token: token,
-        balance: decimalizedBalance,
-        details: b.token_balance.details,
-      };
-    });
+    const decimalizedBalance = new Decimal(
+      b.token_balance.balance.toString(10)
+    ).div(new Decimal(10).pow(token.decimals));
+    return {
+      user_address: b.user_address,
+      token: token,
+      balance: decimalizedBalance,
+      details: b.token_balance.details,
+    };
+  });
 
   const tokens = uniqBy(
     decimalizedBalances.map((b) => b.token),
@@ -167,28 +165,24 @@ export const getResolvRows = async ({
     }
     acc[user].amount = acc[user].amount.add(usd);
     acc[user].details = acc[user].details.concat(
-      b.details
-        .filter((d) => d.contribution > 0n)
-        .map((d) => ({
-          vault_id: d.vault_id,
-          vault_address: d.vault_address,
-          contribution: d.contribution,
-          contribution_usd: new Decimal(d.contribution.toString())
-            .mul(price)
-            .div(new Decimal(10).pow(token.decimals))
-            .toNumber(),
-        }))
+      b.details.map((d) => ({
+        vault_id: d.vault_id,
+        vault_address: d.vault_address,
+        contribution: d.contribution,
+        contribution_usd: new Decimal(d.contribution.toString())
+          .mul(price)
+          .div(new Decimal(10).pow(token.decimals))
+          .toNumber(),
+      }))
     );
     return acc;
   }, {} as Record<Hex, { amount: Decimal; details: { vault_id: string; vault_address: string; contribution: bigint; contribution_usd: number }[] }>);
 
-  const userBalances = Object.entries(usdPerUser)
-    .map(([user, data]) => ({
-      user: user,
-      position: data.amount,
-      details: debug ? data.details : undefined,
-    }))
-    .filter((b) => b.position.toNumber() > 0);
+  const userBalances = Object.entries(usdPerUser).map(([user, data]) => ({
+    user: user,
+    position: data.amount,
+    details: debug ? data.details : undefined,
+  }));
 
   const sortedUserBalances = userBalances.sort(
     (a, b) => b.position.toNumber() - a.position.toNumber()
