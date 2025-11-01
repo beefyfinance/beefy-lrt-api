@@ -1,8 +1,6 @@
 import type { FastifyInstance, FastifyPluginOptions } from "fastify";
 import balances from "./balances";
 import beefy from "./beefy";
-import blocks from "./blocks";
-import breakdown from "./breakdown";
 import config from "./config";
 import partner from "./partner";
 
@@ -13,8 +11,6 @@ export default async function (
 ) {
   instance.register(balances, { prefix: "/balances" });
   instance.register(beefy, { prefix: "/beefy" });
-  instance.register(blocks, { prefix: "/blocks" });
-  instance.register(breakdown, { prefix: "/breakdown" });
   instance.register(partner, { prefix: "/partner" });
   instance.register(config, { prefix: "/config" });
   done();

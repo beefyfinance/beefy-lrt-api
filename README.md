@@ -4,12 +4,6 @@ Wrapper api for the LRT subgraph
 
 # Partners APIs
 
-## Anzen
-
-Token symbols: USDz
-
-- https://lrt.beefy.finance/api/v2/balances/anzen/base/15505804
-
 ## Beefy
 
 Prod:
@@ -21,28 +15,6 @@ Dev:
 - http://localhost:4000/api/v2/beefy/begems/summary
 - http://localhost:4000/api/v2/beefy/begems/user/0x539460bd8d7d6130ce6c4a65c0b59da3b3d2da42
 
-
-## Bedrock
-
-Token symbols: uniETH
-
-- https://lrt.beefy.finance/api/v2/balances/bedrock/arbitrum/238035668
-
-## dlcBTC
-
-Token symbols: dlcBTC
-
-Prod:
-- https://lrt.beefy.finance/api/v2/balances/dlcbtc/arbitrum/250396152
-
-Dev:
-- http://localhost:4000/api/v2/balances/dlcbtc/arbitrum/250396152
-
-## Dolomite
-
-Token symbols: dUSDC
-
-- https://lrt.beefy.finance/api/v2/balances/dolomite/arbitrum/228287548
 
 ## Ethena
 
@@ -101,26 +73,6 @@ Dev
 - http://localhost:4000/api/v2/partner/etherfi/optimism/points-integration/user-balance?blockNumber=124535424
 
 
-## Falcon
-
-Token symbols: sUSDf, USDf
-
-Prod:
-- https://lrt.beefy.finance/api/v2/partner/falcon/ethereum/22622951/shares
-
-Dev:
-- http://localhost:4000/api/v2/partner/falcon/ethereum/22622951/shares
-
-
-## Hybra
-
-Prod:
-- https://lrt.beefy.finance/api/v2/partner/hybra/hyperevm/7697114/time-weighted-token-breakdown
-
-Dev:
-- http://localhost:4000/api/v2/partner/hybra/hyperevm/7697114/time-weighted-token-breakdown
-
-
 ## Infrared
 
 Token symbols: vault whitelist
@@ -131,47 +83,6 @@ Prod
 Dev
 - http://localhost:4000/api/v2/partner/infrared/ir_points_program/0x9AA6183B8E1148969b082B5585b8A7021fA1b6ce/4779606
 
-
-## Kelp
-
-Token symbols: rsETH, wrsETH
-
-- https://lrt.beefy.finance/api/v2/balances/kelp/arbitrum/208382994
-- https://lrt.beefy.finance/api/v2/balances/kelp/base/15920764
-- https://lrt.beefy.finance/api/v2/balances/kelp/linea/5614534
-- https://lrt.beefy.finance/api/v2/balances/kelp/optimism/119693766
-
-Scope: Only vaults marked as `kelp` as `pointStructureIds`
-
-Prod
-- https://lrt.beefy.finance/api/v2/breakdown/base/provider-token-balance/kelp/19538130
-- https://lrt.beefy.finance/api/v2/breakdown/ethereum/provider-token-balance/kelp/20711449
-- https://lrt.beefy.finance/api/v2/breakdown/linea/provider-token-balance/kelp/9225077
-
-Dev
-- http://localhost:4000/api/v2/breakdown/base/provider-token-balance/kelp/19538130
-- http://localhost:4000/api/v2/breakdown/ethereum/provider-token-balance/kelp/20711449
-- http://localhost:4000/api/v2/breakdown/linea/provider-token-balance/kelp/9225077
-
-
-
-## Kinetix
-
-- https://lrt.beefy.finance/api/v2/partner/kinetix/kava/10419541/time-weighted-underlying
-
-## Lynex
-
-Token symbols: inETH, ainETH
-
-- https://lrt.beefy.finance/api/v2/balances/lynex/linea/5413453
-
-
-## StakeStone
-
-Token symbols: STONE
-
-- https://lrt.beefy.finance/api/v2/balances/stakestone/linea/7523848
-- https://lrt.beefy.finance/api/v2/balances/stakestone/manta/2822716
 
 
 ## Resolv
@@ -185,72 +96,15 @@ Prod:
 - https://lrt.beefy.finance/api/v2/partner/resolv/points/plasma?block=2733546&page=1&pageSize=10&debug=true
 
 
-
-## Rings
-
-Token symbols: scUSD
-
-Prod
-- https://lrt.beefy.finance/api/v2/partner/rings/sonic/2037640/0xCAf41F4Db603c3c0427EA700061B94849b848174/weights
-- https://lrt.beefy.finance/api/v2/partner/rings/sonic/2037640/0x8f001b85E8E457976d4fAE884548c9772Aa4056C/weights
-- https://lrt.beefy.finance/api/v2/partner/rings/sonic/2037640/0xc84ABde550ae615257067D898a6Cdd235E1857D0/weights
-
-Dev
-- http://localhost:4000/api/v2/partner/rings/sonic/2037640/0xCAf41F4Db603c3c0427EA700061B94849b848174/weights
-- http://localhost:4000/api/v2/partner/rings/sonic/2037640/0x8f001b85E8E457976d4fAE884548c9772Aa4056C/weights
-- http://localhost:4000/api/v2/partner/rings/sonic/2037640/0xc84ABde550ae615257067D898a6Cdd235E1857D0/weights
-
-## Silo
-
-silo platform breakdown
-
-Prod:
-- https://lrt.beefy.finance/api/v2/partner/silo/sonic/13753734/time-weighted-token-breakdown
-- https://lrt.beefy.finance/api/v2/partner/silo/arbitrum/13753734/time-weighted-token-breakdown
-
-Dev
-- http://localhost:4000/api/v2/partner/silo/sonic/13753734/time-weighted-token-breakdown
-- http://localhost:4000/api/v2/partner/silo/arbitrum/315749227/time-weighted-token-breakdown
-
-## Solv
-
-Vault Whitelist
-
-Prod:
-- https://lrt.beefy.finance/api/v2/breakdown/bsc/provider-token-balance/solv/43714115
-
-Dev:
-- http://localhost:4000/api/v2/breakdown/bsc/provider-token-balance/solv/43714115
-
-
-
-## Swell
-
-- https://lrt.beefy.finance/api/v2/partner/swell/ethereum/19870729/time-weighted-holders/csv
-
-
-## Vector finance
-
-Token symbols: vETH
-
-- https://lrt.beefy.finance/api/v2/balances/vector/ethereum/19810011
-
-## Yei
-
-- https://lrt.beefy.finance/api/v2/partner/yei/sei/94421006/time-weighted-token-breakdown
-
-
 # Other Endpoints
 
 ## Config
 
 Prod:
-- https://lrt.beefy.finance/api/v2/config/arbitrum/points-earning/kelp
 - https://lrt.beefy.finance/api/v2/config/arbitrum/points-earning/etherfi
 - https://lrt.beefy.finance/api/v2/config/berachain/points-earning/infrared
 
 Dev:
-- http://localhost:4000/api/v2/config/arbitrum/points-earning/kelp
 - http://localhost:4000/api/v2/config/arbitrum/points-earning/etherfi
 - http://localhost:4000/api/v2/config/berachain/points-earning/infrared
 
