@@ -1,0 +1,39 @@
+ query TokenBreakdownBalancesBySymbol(
+    $symbols: [String!]
+    $networkId: Int!
+    $blockLt: numeric!
+  ) {
+    Token(
+      where: { _and: { symbol: { _in: $symbols }, chainId: { _eq: $networkId } } }
+    ) {
+      id
+      address
+      symbol
+      decimals
+      breakdownTokensOf {
+        vault {
+          id
+          address
+          vaultId
+          breakdownTokensOrder
+          positions {
+            investor_id
+            directSharesBalance
+            rewardPoolSharesBalance
+            totalSharesBalance
+            balanceBreakdown(
+              limit: 1
+              order_by: { lastUpdateBlock: desc }
+              where: { lastUpdateBlock: { _lt: $blockLt } }
+            ) {
+              id
+              balances
+              lastUpdateBlock
+              timeWeightedBalances
+              lastUpdateTimestamp
+            }
+          }
+        }
+      }
+    }
+  }

@@ -8,15 +8,30 @@
     "lineEnding": "lf",
     "lineWidth": 100,
     "attributePosition": "auto",
-    "ignore": ["./.husky/**", "./build/**", "./node_modules/**"]
+    "ignore": [
+      "./.husky/**",
+      "./build/**",
+      "./node_modules/**",
+      "./src/graphql/client.generated.ts"
+    ]
   },
   "organizeImports": {
     "enabled": true,
-    "ignore": ["./.husky/**", "./build/**", "./node_modules/**"]
+    "ignore": [
+      "./.husky/**",
+      "./build/**",
+      "./node_modules/**",
+      "./src/graphql/client.generated.ts"
+    ]
   },
   "linter": {
     "enabled": true,
-    "ignore": ["./.husky/**", "./build/**", "./node_modules/**"],
+    "ignore": [
+      "./.husky/**",
+      "./build/**",
+      "./node_modules/**",
+      "./src/graphql/client.generated.ts"
+    ],
     "rules": { "recommended": true }
   },
   "javascript": {
