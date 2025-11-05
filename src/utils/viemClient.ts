@@ -90,3 +90,7 @@ export const getViemClient = createCachedFactoryByChainId(chainId => {
   });
 });
 export type BeefyViemClient = ReturnType<typeof getViemClient>;
+
+export const getChainNetworkId = (chainId: ChainId): number => {
+  return mapping[chainId].id;
+};

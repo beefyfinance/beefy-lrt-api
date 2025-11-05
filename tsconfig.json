@@ -20,7 +20,13 @@
     "exactOptionalPropertyTypes": true,
     "noErrorTruncation": true,
     "outDir": "build",
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": ["./node_modules/@types"],
+    "plugins": [
+      {
+        "name": "@0no-co/graphqlsp",
+        "schema": "./src/graphql/schema.generated.graphql"
+      }
+    ]
   },
   "include": ["./src/**/*", "./.graphclient/**/*", "./.graphclient"],
   "exclude": ["./node_modules"],
