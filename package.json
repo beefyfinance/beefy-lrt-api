@@ -33,6 +33,7 @@
     "fastify": "^4.26.2",
     "fluent-json-schema": "^4.2.1",
     "graphql": "^16.8.1",
+    "graphql-request": "^7.3.1",
     "lodash": "^4.17.21",
     "node-cache": "^5.1.2",
     "pino": "^8.19.0",
