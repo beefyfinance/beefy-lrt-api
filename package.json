@@ -51,7 +51,7 @@
     "@types/async-lock": "^1.4.2",
     "@types/lodash": "^4.17.20",
     "@types/node": "^20.11.30",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.6.1",
     "lefthook": "^1.11.7",
     "npm-check-updates": "^16.14.18",
     "pino-pretty": "^11.0.0",
