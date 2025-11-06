@@ -8,8 +8,7 @@ import type { Hex } from "viem";
 import { addressSchema } from "../../../schema/address";
 import { getAsyncCache } from "../../../utils/async-lock";
 import { getLoggerFor } from "../../../utils/log";
-import { fetchWithRetry } from "../../../utils/fetch";
-import { getConfig } from "../../../utils/config";
+import { season2Leaderboard } from "./season2";
 
 const logger = getLoggerFor("beGEMS");
 
@@ -138,41 +137,10 @@ const getBeGemsData = async (): Promise<BeGemsData> => {
     "begems:data",
     2 * 60 * 60 * 1000, // 2 hours in milliseconds
     async () => {
-      logger.info("Fetching fresh beGEMS data from Sentio API");
-
-      const response = await fetchWithRetry(
-        "https://endpoint.sentio.xyz/rxp/beefy-clm-sonic-sentio/sonic_twtvl_global_season2?cache_policy.force_refresh=false&cache_policy.ttl_secs=86400&size=100000",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "api-key": getConfig().sentioApiKey,
-          },
-          body: JSON.stringify({}),
-        },
-        {
-          logger,
-          maxRetries: 3,
-          retryDelay: 30000,
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          `Sentio API error: ${response.status} ${response.statusText}`
-        );
-      }
-
-      const responseData = await response.json();
-
-      // Transform the Sentio API response into our format
-      // Based on the actual API response structure provided
-      const users = responseData.syncSqlResponse.result.rows.map(
-        (row: any) => ({
-          address: row.user,
-          points: row.tt,
-        })
-      );
+      const users = season2Leaderboard.map((user) => ({
+        address: user[0],
+        points: parseInt(user[1]),
+      }));
 
       // Sort users by points descending and add ranks
       const sortedUsers = users.sort((a: any, b: any) => b.points - a.points);
