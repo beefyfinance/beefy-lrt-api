@@ -108,4 +108,12 @@ Dev:
 - http://localhost:4000/api/v2/config/arbitrum/points-earning/etherfi
 - http://localhost:4000/api/v2/config/berachain/points-earning/infrared
 
+## Orbiter
 
+Prod:
+- https://lrt.beefy.finance/api/v2/partner/orbiter/verify/0x4aFb5daf1f6016EdE27EbB838c45a759E0A4e4c4
+- https://lrt.beefy.finance/api/v2/partner/orbiter/verify/0xD9d3dd56936F90ea4c7677F554dfEFD45eF6Df0F
+
+Dev:
+- http://localhost:4000/api/v2/partner/orbiter/verify/0x4aFb5daf1f6016EdE27EbB838c45a759E0A4e4c4
+- http://localhost:4000/api/v2/partner/orbiter/verify/0xD9d3dd56936F90ea4c7677F554dfEFD45eF6Df0F

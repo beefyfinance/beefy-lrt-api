@@ -13,7 +13,6 @@ import {
 
 export type BeefyVault = {
   id: string;
-  is_active: boolean;
   vault_address: Hex;
   undelying_lp_address: Hex;
   strategy_address: Hex;
@@ -23,6 +22,8 @@ export type BeefyVault = {
   boosts: BeefyBoost[];
   pointStructureIds: string[];
   platformId: ApiPlatformId;
+  is_active: boolean;
+  underlyingPlatform: string | null;
 } & (
   | {
       protocol_type: "beefy_clm_vault";
@@ -123,6 +124,7 @@ export type ApiClmManager = {
   earnContractAddress: string; // reward pool address
   earnedTokenAddress: string; // clm manager address
   pointStructureIds?: string[];
+  tokenProviderId?: string;
 };
 
 export type ApiClmRewardPool = {
@@ -184,7 +186,25 @@ const protocol_map: Record<ApiPlatformId, BeefyProtocolType> = {
   euler: "euler",
 };
 
+const platformIdToProtocolType: Record<string, BeefyProtocolType> = {
+  balancer: "balancer",
+};
+
 export const getBeefyVaultConfig = async (
+  chain: ChainId,
+  vaultFilter: (vault: BeefyVault) => boolean
+): Promise<BeefyVault[]> => {
+  const asyncCache = getAsyncCache();
+  const allConfigs = await asyncCache.wrap(
+    `beefy-vault-config:${chain}`,
+    5 * 60 * 1000,
+    () => getAllConfigs(chain)
+  );
+  const filteredConfigs = allConfigs.filter(vaultFilter);
+  return filteredConfigs;
+};
+
+export const getBeefyBreakdownableVaultConfig = async (
   chain: ChainId,
   vaultFilter: (vault: BeefyVault) => boolean
 ): Promise<BeefyVault[]> => {
@@ -264,16 +284,24 @@ const getAllConfigs = async (chain: ChainId): Promise<BeefyVault[]> => {
     const undelying_lp_address = vault.tokenAddress.toLocaleLowerCase() as Hex;
     const vault_address = vault.earnedTokenAddress.toLocaleLowerCase() as Hex;
 
-    const protocol_type: BeefyProtocolType | undefined =
+    let protocol_type: BeefyProtocolType | undefined =
       vault.type === "cowcentrated"
         ? "beefy_clm"
         : protocol_map[vault.platformId];
+    if (!protocol_type) {
+      const mappedProtocolType = platformIdToProtocolType[vault.platformId];
+      if (mappedProtocolType) {
+        protocol_type = mappedProtocolType;
+      }
+    }
     if (protocol_type === "beefy_clm_vault") {
       throw new FriendlyError("Invalid protocol");
     }
+
     const reward_pools = clmRewardPoolDataPerClmAddress[vault_address] ?? [];
 
     const boosts = boostPerUnderlyingAddress[vault_address] ?? [];
+    const underlyingPlatform = vault.tokenProviderId ?? null;
 
     return {
       id: vault.id,
@@ -285,6 +313,7 @@ const getAllConfigs = async (chain: ChainId): Promise<BeefyVault[]> => {
       platformId: vault.platformId,
       strategy_address: vault.strategy.toLocaleLowerCase() as Hex,
       undelying_lp_address,
+      underlyingPlatform,
       reward_pools: reward_pools.map((pool) => ({
         id: pool.id,
         clm_address: pool.tokenAddress.toLocaleLowerCase() as Hex,
@@ -300,67 +329,85 @@ const getAllConfigs = async (chain: ChainId): Promise<BeefyVault[]> => {
     };
   });
 
-  const mooVaultCofigs = mooVaultsData.map((vault): BeefyVault => {
-    let underlying_lp_address = vault.tokenAddress?.toLocaleLowerCase() as
-      | Hex
-      | undefined;
-    const vault_address = vault.earnedTokenAddress.toLocaleLowerCase() as Hex;
+  const mooVaultCofigs = mooVaultsData
+    .filter((vault) => {
+      const dropEol = ["aave-matic-eol"];
+      return !dropEol.includes(vault.id);
+    })
+    .map((vault): BeefyVault => {
+      let underlying_lp_address = vault.tokenAddress?.toLocaleLowerCase() as
+        | Hex
+        | undefined;
+      const vault_address = vault.earnedTokenAddress.toLocaleLowerCase() as Hex;
 
-    if (
-      !underlying_lp_address &&
-      (isNativeToken(chain, vault.token) || isNativeToken(chain, vault.name))
-    ) {
-      const wnative = getWNativeToken(chain);
-      underlying_lp_address = wnative.address as Hex;
-    }
+      if (
+        !underlying_lp_address &&
+        (isNativeToken(chain, vault.token) || isNativeToken(chain, vault.name))
+      ) {
+        const wnative = getWNativeToken(chain);
+        underlying_lp_address = wnative.address as Hex;
+      }
 
-    if (!underlying_lp_address) {
-      throw new FriendlyError(
-        `Missing "tokenAddress" field for vault ${vault.id}.`
-      );
-    }
+      if (!underlying_lp_address) {
+        throw new FriendlyError(
+          `Missing "tokenAddress" field for vault ${vault.id}.`
+        );
+      }
 
-    const protocol_type: BeefyProtocolType | undefined =
-      clmManagerAddresses.has(underlying_lp_address)
-        ? "beefy_clm_vault"
-        : protocol_map[vault.platformId];
+      let protocol_type: BeefyProtocolType | undefined =
+        clmManagerAddresses.has(underlying_lp_address)
+          ? "beefy_clm_vault"
+          : protocol_map[vault.platformId];
 
-    const additionalConfig =
-      protocol_type === "beefy_clm_vault"
-        ? {
-            protocol_type,
-            platformId: vault.platformId,
-            beefy_clm_manager: clmVaultConfigs.find(
-              (v) => v.vault_address === underlying_lp_address
-            ) as BeefyVault,
-          }
-        : { protocol_type, platformId: vault.platformId };
-    const reward_pools =
-      vaultRewardPoolDataPerVaultAddress[vault_address] ?? [];
-    const boosts = boostPerUnderlyingAddress[vault_address] ?? [];
-    return {
-      id: vault.id,
-      is_active: vault.status === "active",
-      vault_address,
-      chain: vault.chain,
-      vault_token_symbol: vault.earnedToken,
-      ...additionalConfig,
-      strategy_address: vault.strategy.toLocaleLowerCase() as Hex,
-      undelying_lp_address: underlying_lp_address,
-      reward_pools: reward_pools.map((pool) => ({
-        id: pool.id,
-        clm_address: pool.tokenAddress.toLocaleLowerCase() as Hex,
-        reward_pool_address:
-          pool.earnContractAddress.toLocaleLowerCase() as Hex,
-      })),
-      boosts: boosts.map((boost) => ({
-        id: boost.id,
-        boost_address: boost.earnedTokenAddress.toLocaleLowerCase() as Hex,
-        underlying_address: boost.tokenAddress.toLocaleLowerCase() as Hex,
-      })),
-      pointStructureIds: vault.pointStructureIds ?? [],
-    };
-  });
+      if (!protocol_type) {
+        const mappedProtocolType = platformIdToProtocolType[vault.platformId];
+        if (mappedProtocolType) {
+          protocol_type = mappedProtocolType;
+        }
+      }
+
+      const additionalConfig =
+        protocol_type === "beefy_clm_vault"
+          ? {
+              protocol_type,
+              platformId: vault.platformId,
+              beefy_clm_manager: clmVaultConfigs.find(
+                (v) =>
+                  v.vault_address.toLowerCase() ===
+                  underlying_lp_address.toLowerCase()
+              ) as BeefyVault,
+            }
+          : { protocol_type, platformId: vault.platformId };
+      const reward_pools =
+        vaultRewardPoolDataPerVaultAddress[vault_address] ?? [];
+      const boosts = boostPerUnderlyingAddress[vault_address] ?? [];
+
+      const underlyingPlatform = vault.platformId ?? null;
+
+      return {
+        id: vault.id,
+        is_active: vault.status === "active",
+        vault_address,
+        chain: vault.chain,
+        vault_token_symbol: vault.earnedToken,
+        ...additionalConfig,
+        underlyingPlatform,
+        strategy_address: vault.strategy.toLocaleLowerCase() as Hex,
+        undelying_lp_address: underlying_lp_address,
+        reward_pools: reward_pools.map((pool) => ({
+          id: pool.id,
+          clm_address: pool.tokenAddress.toLocaleLowerCase() as Hex,
+          reward_pool_address:
+            pool.earnContractAddress.toLocaleLowerCase() as Hex,
+        })),
+        boosts: boosts.map((boost) => ({
+          id: boost.id,
+          boost_address: boost.earnedTokenAddress.toLocaleLowerCase() as Hex,
+          underlying_address: boost.tokenAddress.toLocaleLowerCase() as Hex,
+        })),
+        pointStructureIds: vault.pointStructureIds ?? [],
+      };
+    });
 
   const allConfigs = clmVaultConfigs.concat(mooVaultCofigs);
   return allConfigs;

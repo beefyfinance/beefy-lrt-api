@@ -3,6 +3,7 @@ import ethena from "./ethena";
 import etherfi from "./etherfi";
 import infrared from "./infrared";
 import resolv from "./resolv";
+import orbiter from "./orbiter";
 
 export default async function (
   instance: FastifyInstance,
@@ -13,5 +14,6 @@ export default async function (
   instance.register(etherfi, { prefix: "/etherfi" });
   instance.register(infrared, { prefix: "/infrared" });
   instance.register(resolv, { prefix: "/resolv" });
+  instance.register(orbiter, { prefix: "/orbiter" });
   done();
 }
