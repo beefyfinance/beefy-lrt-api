@@ -81,7 +81,8 @@ type ApiPlatformId =
   | "nile"
   | "euler"
   | "swapx"
-  | "velodrome";
+  | "velodrome"
+  | "curvance";
 
 export type ApiStrategyTypeId =
   | "lp"
@@ -184,6 +185,7 @@ const protocol_map: Record<ApiPlatformId, BeefyProtocolType> = {
   beethovenx: "balancer_aura",
   silo: "balancer",
   euler: "euler",
+  curvance: "euler",
 };
 
 const platformIdToProtocolType: Record<string, BeefyProtocolType> = {

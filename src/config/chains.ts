@@ -17,12 +17,14 @@ const ethena = ['USDe', 'sUSDe'];
 const etherfi = ['eETH', 'weETH', 'weETH.mode'];
 const infrared = ['infrared']; // whitelisted by platform
 const resolv = ['resolv']; // this token does not exist
+const curvance = ['curvance']; // this token does not exist
 
 const providers = {
   ethena,
   etherfi,
   infrared,
   resolv,
+  curvance,
 };
 
 export type ProviderId = keyof typeof providers;
@@ -92,6 +94,11 @@ export const chains = toChainMap([
   {
     id: 'mode',
     name: 'Mode',
+    providers,
+  },
+  {
+    id: 'monad',
+    name: 'Monad',
     providers,
   },
   {
