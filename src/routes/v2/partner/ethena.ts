@@ -1,26 +1,30 @@
-import type { Token } from 'blockchain-addressbook';
-import Decimal from 'decimal.js';
-import type { FastifyInstance, FastifyPluginOptions, FastifySchema } from 'fastify';
-import S from 'fluent-json-schema';
-import type { Hex } from 'viem';
-import type { ChainId } from '../../../config/chains';
-import { getChainsByProvider } from '../../../config/chains';
-import { addressSchema } from '../../../schema/address';
-import { bigintSchema } from '../../../schema/bigint';
-import { chainSchema } from '../../../schema/chain';
-import { getTokenConfigBySymbol } from '../../../utils/addressbook';
-import { getAsyncCache } from '../../../utils/async-lock';
-import { getLoggerFor } from '../../../utils/log';
-import { getUserTVLAtBlock } from '../../../vault-breakdown/fetchAllUserBreakdown';
-import { getBeefyVaultConfig } from '../../../vault-breakdown/vault/getBeefyVaultConfig';
-import { getTokenBalances } from '../../../vault-breakdown/vault/getTokenBalances';
+import type { Token } from "@beefyfinance/blockchain-addressbook";
+import Decimal from "decimal.js";
+import type {
+  FastifyInstance,
+  FastifyPluginOptions,
+  FastifySchema,
+} from "fastify";
+import S from "fluent-json-schema";
+import type { Hex } from "viem";
+import type { ChainId } from "../../../config/chains";
+import { getChainsByProvider } from "../../../config/chains";
+import { addressSchema } from "../../../schema/address";
+import { bigintSchema } from "../../../schema/bigint";
+import { chainSchema } from "../../../schema/chain";
+import { getTokenConfigBySymbol } from "../../../utils/addressbook";
+import { getAsyncCache } from "../../../utils/async-lock";
+import { getLoggerFor } from "../../../utils/log";
+import { getUserTVLAtBlock } from "../../../vault-breakdown/fetchAllUserBreakdown";
+import { getBeefyVaultConfig } from "../../../vault-breakdown/vault/getBeefyVaultConfig";
+import { getTokenBalances } from "../../../vault-breakdown/vault/getTokenBalances";
 
-const logger = getLoggerFor('routes/v2/partner/ethena');
+const logger = getLoggerFor("routes/v2/partner/ethena");
 
 export default async function (
   instance: FastifyInstance,
   _opts: FastifyPluginOptions,
-  done: (err?: Error) => void
+  done: (err?: Error) => void,
 ) {
   // user list endpoint
   {
@@ -29,14 +33,14 @@ export default async function (
     };
 
     const urlParamsSchema = S.object().prop(
-      'chain',
-      chainSchema.required().description('Chain to query users for')
+      "chain",
+      chainSchema.required().description("Chain to query users for"),
     );
 
     const responseSchema = S.object();
 
     const schema: FastifySchema = {
-      tags: ['v2'],
+      tags: ["v2"],
       params: urlParamsSchema,
       response: {
         200: responseSchema,
@@ -45,62 +49,82 @@ export default async function (
 
     const asyncCache = getAsyncCache();
 
-    instance.get<{ Params: UrlParams }>('/:chain/users', { schema }, async (request, reply) => {
-      const { chain } = request.params;
-      const providerId = 'ethena' as const;
+    instance.get<{ Params: UrlParams }>(
+      "/:chain/users",
+      { schema },
+      async (request, reply) => {
+        const { chain } = request.params;
+        const providerId = "ethena" as const;
 
-      const validChains = getChainsByProvider(providerId);
-      const chainConfig = validChains.find(c => c.id === chain);
-      if (!chainConfig) {
-        reply.code(404).send({
-          error: 'Chain not supported for provider',
-          validChains: validChains.map(c => c.id),
-        });
-        return;
-      }
+        const validChains = getChainsByProvider(providerId);
+        const chainConfig = validChains.find((c) => c.id === chain);
+        if (!chainConfig) {
+          reply.code(404).send({
+            error: "Chain not supported for provider",
+            validChains: validChains.map((c) => c.id),
+          });
+          return;
+        }
 
-      const symbols = chainConfig.providers[providerId];
-      if (!symbols) {
-        reply.code(404).send({
-          error: 'Chain not supported for provider',
-          validChains: validChains.map(c => c.id),
-        });
-        return;
-      }
+        const symbols = chainConfig.providers[providerId];
+        if (!symbols) {
+          reply.code(404).send({
+            error: "Chain not supported for provider",
+            validChains: validChains.map((c) => c.id),
+          });
+          return;
+        }
 
-      const tokensFilter = symbols
-        .map(s => getTokenConfigBySymbol(chainConfig.id, s))
-        .filter(Boolean) as Token[];
+        const tokensFilter = symbols
+          .map((s) => getTokenConfigBySymbol(chainConfig.id, s))
+          .filter(Boolean) as Token[];
 
-      if (!tokensFilter.length) {
-        reply.code(404).send({
-          error: 'No tokens found for chain',
-        });
-        return;
-      }
+        if (!tokensFilter.length) {
+          reply.code(404).send({
+            error: "No tokens found for chain",
+          });
+          return;
+        }
 
-      logger.debug({ msg: 'Fetching ethena users', chain });
+        logger.debug({ msg: "Fetching ethena users", chain });
 
-      const allTokenBalances = await asyncCache.wrap(`ethena:users:${chain}`, 30_000, async () => {
-        const vaultConfig = await getBeefyVaultConfig(chain, vault => {
-          return vault.pointStructureIds.includes('ethena');
-        });
+        const allTokenBalances = await asyncCache.wrap(
+          `ethena:users:${chain}`,
+          30_000,
+          async () => {
+            const vaultConfig = await getBeefyVaultConfig(chain, (vault) => {
+              return vault.pointStructureIds.includes("ethena");
+            });
 
-        const allProductAddresses = vaultConfig
-          .map(v => v.vault_address)
-          .concat(vaultConfig.flatMap(v => v.reward_pools.map(p => p.reward_pool_address)))
-          .concat(vaultConfig.flatMap(v => v.boosts.map(b => b.boost_address)));
+            const allProductAddresses = vaultConfig
+              .map((v) => v.vault_address)
+              .concat(
+                vaultConfig.flatMap((v) =>
+                  v.reward_pools.map((p) => p.reward_pool_address),
+                ),
+              )
+              .concat(
+                vaultConfig.flatMap((v) =>
+                  v.boosts.map((b) => b.boost_address),
+                ),
+              );
 
-        logger.trace({ msg: 'Fetching token balances', chain, addresses: allProductAddresses });
+            logger.trace({
+              msg: "Fetching token balances",
+              chain,
+              addresses: allProductAddresses,
+            });
 
-        return getTokenBalances(chain, {
-          tokenAddresses: allProductAddresses,
-        });
-      });
-      const users = new Set(allTokenBalances.map(r => r.user_address));
+            return getTokenBalances(chain, {
+              tokenAddresses: allProductAddresses,
+            });
+          },
+        );
+        const users = new Set(allTokenBalances.map((r) => r.user_address));
 
-      reply.send(Array.from(users));
-    });
+        reply.send(Array.from(users));
+      },
+    );
   }
 
   // balances endpoint
@@ -112,20 +136,27 @@ export default async function (
     };
 
     const urlParamsSchema = S.object()
-      .prop('chain', chainSchema.required().description('Chain to query balances for'))
       .prop(
-        'user_address',
-        addressSchema.required().description('User address to query balances for')
+        "chain",
+        chainSchema.required().description("Chain to query balances for"),
       )
       .prop(
-        'block_number',
-        bigintSchema.required().description('Block number to query balances at')
+        "user_address",
+        addressSchema
+          .required()
+          .description("User address to query balances for"),
+      )
+      .prop(
+        "block_number",
+        bigintSchema
+          .required()
+          .description("Block number to query balances at"),
       );
 
     const responseSchema = S.object();
 
     const schema: FastifySchema = {
-      tags: ['v2'],
+      tags: ["v2"],
       params: urlParamsSchema,
       response: {
         200: responseSchema,
@@ -133,18 +164,18 @@ export default async function (
     };
 
     instance.get<{ Params: UrlParams }>(
-      '/:chain/user/:user_address/balance/:block_number',
+      "/:chain/user/:user_address/balance/:block_number",
       { schema },
       async (request, reply) => {
         const { chain, user_address, block_number } = request.params;
-        const providerId = 'ethena' as const;
+        const providerId = "ethena" as const;
 
         const validChains = getChainsByProvider(providerId);
-        const chainConfig = validChains.find(c => c.id === chain);
+        const chainConfig = validChains.find((c) => c.id === chain);
         if (!chainConfig) {
           reply.code(404).send({
-            error: 'Chain not supported for provider',
-            validChains: validChains.map(c => c.id),
+            error: "Chain not supported for provider",
+            validChains: validChains.map((c) => c.id),
           });
           return;
         }
@@ -152,19 +183,19 @@ export default async function (
         const symbols = chainConfig.providers[providerId];
         if (!symbols) {
           reply.code(404).send({
-            error: 'Chain not supported for provider',
-            validChains: validChains.map(c => c.id),
+            error: "Chain not supported for provider",
+            validChains: validChains.map((c) => c.id),
           });
           return;
         }
 
         const tokensFilter = symbols
-          .map(s => getTokenConfigBySymbol(chainConfig.id, s))
+          .map((s) => getTokenConfigBySymbol(chainConfig.id, s))
           .filter(Boolean) as Token[];
 
         if (!tokensFilter.length) {
           reply.code(404).send({
-            error: 'No tokens found for chain',
+            error: "No tokens found for chain",
           });
           return;
         }
@@ -173,10 +204,10 @@ export default async function (
           chainConfig.id,
           user_address,
           tokensFilter,
-          BigInt(block_number)
+          BigInt(block_number),
         );
         reply.send(result);
-      }
+      },
     );
   }
 
@@ -187,33 +218,45 @@ const getEthenaBalance = async (
   chain: ChainId,
   userAddressFilter: Hex,
   tokenFilter: Token[],
-  blockNumber: bigint
+  blockNumber: bigint,
 ) => {
   const asyncCache = getAsyncCache();
 
-  const balances = await asyncCache.wrap(`ethena:breakdown:${chain}:${blockNumber}`, 30_000, () =>
-    getUserTVLAtBlock(chain, blockNumber, vault => {
-      return vault.pointStructureIds.includes('ethena');
-    })
+  const balances = await asyncCache.wrap(
+    `ethena:breakdown:${chain}:${blockNumber}`,
+    30_000,
+    () =>
+      getUserTVLAtBlock(chain, blockNumber, (vault) => {
+        return vault.pointStructureIds.includes("ethena");
+      }),
   );
 
   const balanceForUserAndBlock = balances
-    .filter(b =>
-      tokenFilter.some(t => t.address.toLocaleLowerCase() === b.token_address.toLocaleLowerCase())
+    .filter((b) =>
+      tokenFilter.some(
+        (t) =>
+          t.address.toLocaleLowerCase() === b.token_address.toLocaleLowerCase(),
+      ),
     )
-    .filter(b => userAddressFilter.toLocaleLowerCase() === b.user_address.toLocaleLowerCase())
+    .filter(
+      (b) =>
+        userAddressFilter.toLocaleLowerCase() ===
+        b.user_address.toLocaleLowerCase(),
+    )
     .reduce(
       (acc, b) => {
         const token = tokenFilter.find(
-          t => t.address.toLocaleLowerCase() === b.token_address.toLocaleLowerCase()
+          (t) =>
+            t.address.toLocaleLowerCase() ===
+            b.token_address.toLocaleLowerCase(),
         );
         if (!token) {
-          throw new Error('Token not found');
+          throw new Error("Token not found");
         }
 
-        const decimalizedBalance = new Decimal(b.token_balance.balance.toString(10)).div(
-          new Decimal(10).pow(token.decimals)
-        );
+        const decimalizedBalance = new Decimal(
+          b.token_balance.balance.toString(10),
+        ).div(new Decimal(10).pow(token.decimals));
         return {
           amount: acc.amount.add(decimalizedBalance),
           details: acc.details.concat(b.details),
@@ -221,8 +264,12 @@ const getEthenaBalance = async (
       },
       {
         amount: new Decimal(0),
-        details: [] as { vault_id: string; vault_address: string; contribution: bigint }[],
-      }
+        details: [] as {
+          vault_id: string;
+          vault_address: string;
+          contribution: bigint;
+        }[],
+      },
     );
 
   return {

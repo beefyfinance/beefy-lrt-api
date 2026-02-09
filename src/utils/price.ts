@@ -1,4 +1,4 @@
-import type { Token } from 'blockchain-addressbook';
+import type { Token } from '@beefyfinance/blockchain-addressbook';
 import { getAsyncCache } from './async-lock';
 import { getConfig } from './config';
 import { FriendlyError } from './error';
