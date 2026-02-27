@@ -195,13 +195,13 @@ const platformIdToProtocolType: Record<string, BeefyProtocolType> = {
 
 export const getBeefyVaultConfig = async (
   chain: ChainId,
-  vaultFilter: (vault: BeefyVault) => boolean
+  vaultFilter: (vault: BeefyVault) => boolean,
 ): Promise<BeefyVault[]> => {
   const asyncCache = getAsyncCache();
   const allConfigs = await asyncCache.wrap(
     `beefy-vault-config:${chain}`,
     5 * 60 * 1000,
-    () => getAllConfigs(chain)
+    () => getAllConfigs(chain),
   );
   const filteredConfigs = allConfigs.filter(vaultFilter);
   return filteredConfigs;
@@ -209,13 +209,13 @@ export const getBeefyVaultConfig = async (
 
 export const getBeefyBreakdownableVaultConfig = async (
   chain: ChainId,
-  vaultFilter: (vault: BeefyVault) => boolean
+  vaultFilter: (vault: BeefyVault) => boolean,
 ): Promise<BeefyVault[]> => {
   const asyncCache = getAsyncCache();
   const allConfigs = await asyncCache.wrap(
     `beefy-vault-config:${chain}`,
     5 * 60 * 1000,
-    () => getAllConfigs(chain)
+    () => getAllConfigs(chain),
   );
   const filteredConfigs = allConfigs.filter(vaultFilter);
 
@@ -224,7 +224,7 @@ export const getBeefyBreakdownableVaultConfig = async (
   if (notFoundProtocols.length > 0) {
     const messages = notFoundProtocols.map(
       (v) =>
-        `Unknown platformId ${v.platformId} for vault ${v.id}. Devs need to implement breakdown for this protocol`
+        `Unknown platformId ${v.platformId} for vault ${v.id}. Devs need to implement breakdown for this protocol`,
     );
     throw new FriendlyError(messages.join("\n"));
   }
@@ -242,21 +242,21 @@ const getAllConfigs = async (chain: ChainId): Promise<BeefyVault[]> => {
     fetch(`${BEEFY_COW_VAULT_API}/${chain}`)
       .then((res) => res.json())
       .then((res) =>
-        (res as ApiClmManager[]).filter((vault) => vault.chain === chain)
+        (res as ApiClmManager[]).filter((vault) => vault.chain === chain),
       ),
     fetch(`${BEEFY_MOO_VAULT_API}/${chain}`)
       .then((res) => res.json())
       .then((res) =>
         (res as ApiVault[])
           .filter((vault) => vault.chain === chain)
-          .filter((vault) => vault.isGovVault !== true)
+          .filter((vault) => vault.isGovVault !== true),
       ),
     fetch(`${BEEFY_GOV_API}/${chain}`)
       .then((res) => res.json())
       .then((res) =>
         (res as ApiClmRewardPool[])
           .filter((g) => g.chain === chain)
-          .filter((g) => g.version === 2)
+          .filter((g) => g.version === 2),
       ),
     fetch(`${BEEFY_BOOST_API}/${chain}`)
       .then((res) => res.json())
@@ -271,16 +271,16 @@ const getAllConfigs = async (chain: ChainId): Promise<BeefyVault[]> => {
   ]);
 
   const clmManagerAddresses = new Set(
-    cowVaultsData.map((v) => v.earnedTokenAddress.toLocaleLowerCase())
+    cowVaultsData.map((v) => v.earnedTokenAddress.toLocaleLowerCase()),
   );
   const boostPerUnderlyingAddress = groupBy(boostData, (b) =>
-    b.tokenAddress?.toLocaleLowerCase()
+    b.tokenAddress?.toLocaleLowerCase(),
   );
   const vaultRewardPoolDataPerVaultAddress = groupBy(vaultRewardPoolData, (v) =>
-    v.tokenAddress.toLocaleLowerCase()
+    v.tokenAddress.toLocaleLowerCase(),
   );
   const clmRewardPoolDataPerClmAddress = groupBy(clmRewardPoolData, (c) =>
-    c.tokenAddress.toLocaleLowerCase()
+    c.tokenAddress.toLocaleLowerCase(),
   );
 
   const clmVaultConfigs = cowVaultsData.map((vault): BeefyVault => {
@@ -352,10 +352,10 @@ const getAllConfigs = async (chain: ChainId): Promise<BeefyVault[]> => {
         underlying_lp_address = wnative.address as Hex;
       }
 
+      // missing tokenAddress means wnative
       if (!underlying_lp_address) {
-        throw new FriendlyError(
-          `Missing "tokenAddress" field for vault ${vault.id}.`
-        );
+        const wnative = getWNativeToken(chain);
+        underlying_lp_address = wnative.address as Hex;
       }
 
       let protocol_type: BeefyProtocolType | undefined =
@@ -378,7 +378,7 @@ const getAllConfigs = async (chain: ChainId): Promise<BeefyVault[]> => {
               beefy_clm_manager: clmVaultConfigs.find(
                 (v) =>
                   v.vault_address.toLowerCase() ===
-                  underlying_lp_address.toLowerCase()
+                  underlying_lp_address.toLowerCase(),
               ) as BeefyVault,
             }
           : { protocol_type, platformId: vault.platformId };
